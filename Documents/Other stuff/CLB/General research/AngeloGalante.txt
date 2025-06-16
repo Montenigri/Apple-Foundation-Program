@@ -1,4 +1,4 @@
-﻿Domande guida Angelo
+Domande guida Angelo
 
 
 “Tracciare il tempo reale evidenziando i momenti di vuoto, suggerendo azioni sostitutive impostate dall’utente.” (risposta a essential question -> challenge)
@@ -11,7 +11,7 @@ Domande guida in relazione alla challenge
     • 5) Quanto ti senti soddisfatto dell’uso che fai del tuo smartphone durante la giornata?
     • 6) L’utilizzo quotidiano dello smartphone ti consente di svolgere regolarmente i tuoi impegni giornalieri?
     • 7) Riscontri difficoltà nell'equilibrare l'uso dello smartphone con le tue attività quotidiane? Se sì quali problemi riscontri? 
-    • 8) Ritieni che l’uso dello smartphone possa far venir meno    il rispetto di certi impegni, o ostacoli attività importanti per te?
+    • 8) Ritieni che l’uso dello smartphone possa far venir meno il rispetto di certi impegni, o ostacoli attività importanti per te?
     • 9) Quali strumenti o funzionalità pensi potrebbero aiutarti a gestire meglio il tempo passato sullo smartphone?(Domanda a risposta aperta)
     • 10) Durante la giornata, ci sono spazi di tempo che non hai ancora definito con attività precise? Se sì, come ti piacerebbe utilizzarli?
 
