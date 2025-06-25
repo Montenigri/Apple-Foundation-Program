@@ -215,4 +215,9 @@ class TaskManager: ObservableObject {
             tasks[index].isCompleted.toggle()
         }
     }
+
+    func getTasksForDate(_ date: Date) -> [Task] {
+        let calendar = Calendar.current
+        return tasks.filter { calendar.isDate($0.startTime, inSameDayAs: date) }
+    }
 }
