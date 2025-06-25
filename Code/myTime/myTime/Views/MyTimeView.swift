@@ -40,22 +40,21 @@ struct MyTimeView: View {
                 // Lista Task con swipe
                 List {
                     ForEach(sortedTasks()) { task in
-                        HStack(alignment: .top, spacing: 12) {
-                            // Barretta verticale orario
+                        HStack(alignment: .bottom, spacing: 12) {
+                            // Barretta verticale orario + orario in basso
                             VStack {
+                                Spacer()
                                 Rectangle()
                                     .fill(Color.appLightBlue)
                                     .frame(width: 4, height: 50)
                                     .cornerRadius(2)
-                                Spacer()
-                            }
-                            .padding(.top, 8)
-
-                            // Riquadro task
-                            VStack(alignment: .leading, spacing: 4) {
                                 Text(timeString(from: task.startTime))
-                                    .font(.caption)
+                                    .font(.caption2)
                                     .foregroundColor(.appLightBlue)
+                                    .padding(.top, 4)
+                            }
+                            // Card task
+                            VStack(alignment: .leading, spacing: 4) {
                                 Text(task.name)
                                     .font(.headline)
                                     .foregroundColor(.appDarkBlue)
@@ -71,7 +70,6 @@ struct MyTimeView: View {
                                     .fill(task.isCompleted ? Color.appBeige.opacity(0.3) : Color.appBeige)
                             )
                             .opacity(task.isCompleted ? 0.5 : 1.0)
-
                             Spacer()
                         }
                         .contentShape(Rectangle())
@@ -101,9 +99,9 @@ struct MyTimeView: View {
                         }
                     }
                     .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
                 }
                 .listStyle(.plain)
-                .background(Color.clear)
             }
         }
         .sheet(item: $selectedTask) { task in
