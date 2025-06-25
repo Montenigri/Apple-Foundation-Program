@@ -274,7 +274,7 @@ class TaskManager: ObservableObject {
 }
 
 // MARK: - Main App View
-struct ContentView: View {
+struct ContentView_old: View {
     @StateObject private var taskManager = TaskManager()
     @State private var selectedTab = 0
     

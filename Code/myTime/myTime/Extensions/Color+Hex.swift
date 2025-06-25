@@ -1,3 +1,5 @@
+import SwiftUI
+
 extension Color {
     static let appBlack = Color(hex: "#0f1416")
     static let appDarkBlue = Color(hex: "#2b4466")
