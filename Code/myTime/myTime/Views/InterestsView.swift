@@ -4,19 +4,19 @@ struct InterestsView: View {
     @EnvironmentObject var taskManager: TaskManager
     @Environment(\.presentationMode) var presentationMode
     @State private var showingAddInterest = false
-    
+
     var body: some View {
         NavigationView {
             ZStack {
                 Color.appBlack.ignoresSafeArea()
-                
+
                 VStack {
                     if taskManager.interests.isEmpty {
-                        Text("Nessun interesse aggiunto")
+                        Text("Clicca sul pulsante per aggiungere un task da suggerire")
                             .foregroundColor(.appBeige)
                             .padding()
                     } else {
-                        ScrollView {
+                        List {
                             ForEach(taskManager.interests) { interest in
                                 VStack(alignment: .leading, spacing: 5) {
                                     Text(interest.name)
@@ -39,9 +39,9 @@ struct InterestsView: View {
                             .padding(.horizontal)
                         }
                     }
-                    
+
                     Spacer()
-                    
+
                     Button("Aggiungi interessi") {
                         showingAddInterest = true
                     }
