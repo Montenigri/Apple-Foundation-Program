@@ -349,106 +349,40 @@ struct MyTimeView: View {
         ZStack {
             Color.appBlack.ignoresSafeArea()
             
-            // ...existing code...
-VStack(alignment: .leading, spacing: 0) {
-    // Header mese/anno
-    Text(currentMonth())
-        .font(.title2)
-        .fontWeight(.bold)
-        .foregroundColor(.appBeige)
-        .padding(.horizontal, 20)
-        .padding(.top, 10)
-    
-    // Barra orizzontale
-    Rectangle()
-        .fill(Color.appDarkBlue.opacity(0.5))
-        .frame(height: 2)
-        .padding(.horizontal, 20)
-    
-    // Giorno abbreviazione (in inglese)
-    Text(currentWeekdayAbbr())
-        .font(.headline)
-        .foregroundColor(.appBeige)
-        .padding(.horizontal, 20)
-        .padding(.top, 4)
-    
-    // Giorno numero
-    Text(currentDay())
-        .font(.largeTitle)
-        .fontWeight(.bold)
-        .foregroundColor(.appBeige)
-        .padding(.horizontal, 20)
-        .padding(.bottom, 8)
-    
-    // Tasks List con swipe
-    List {
-        ForEach(sortedTasks()) { task in
-            HStack(alignment: .top, spacing: 12) {
-                // Barretta verticale orario
-                VStack {
-                    Rectangle()
-                        .fill(task.isSuggested ? Color.appLightBlue : Color.appDarkBlue)
-                        .frame(width: 4, height: 50)
-                        .cornerRadius(2)
-                    Spacer()
-                }
-                .padding(.top, 8)
-                
-                // Orario
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(timeString(from: task.startTime))
-                        .font(.caption)
-                        .foregroundColor(.appDarkBlue.opacity(0.7))
-                        .padding(.bottom, 2)
-                    Spacer()
-                }
-                .frame(width: 50, alignment: .leading)
-                
-                // Riquadro task
-                TaskRowView(task: task) {
-                    selectedTask = task
-                }
-            }
-            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                Button(role: .destructive) {
-                    taskManager.removeTask(task)
-                } label: {
-                    Label("Elimina", systemImage: "trash")
-                }
-            }
-            .swipeActions(edge: .leading, allowsFullSwipe: false) {
-                Button {
-                    if task.isCompleted {
-                        // Segna come da completare
-                        if let idx = taskManager.tasks.firstIndex(where: { $0.id == task.id }) {
-                            taskManager.tasks[idx].isCompleted = false
-                            taskManager.saveData()
-                        }
-                    } else {
-                        // Segna come completato
-                        taskManager.completeTask(task)
+            VStack(alignment: .leading, spacing: 0) {
+                // Fixed Header
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(currentMonth())
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.appBeige)
+                    
+                    HStack {
+                        Text(currentWeekday())
+                            .font(.headline)
+                            .foregroundColor(.appBeige)
+                        
+                        Text(currentDay())
+                            .font(.headline)
+                            .foregroundColor(.appBeige)
                     }
-                } label: {
-                    Label(task.isCompleted ? "Da completare" : "Completato", systemImage: task.isCompleted ? "arrow.uturn.backward" : "checkmark")
                 }
-                .tint(task.isCompleted ? .orange : .green)
+                .padding(.horizontal, 20)
+                .padding(.top, 10)
+                
+                // Tasks ScrollView
+                ScrollView {
+                    LazyVStack(spacing: 12) {
+                        ForEach(sortedTasks()) { task in
+                            TaskRowView(task: task) {
+                                selectedTask = task
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 20)
+                }
             }
-        }
-    }
-    .listStyle(PlainListStyle())
-    .background(Color.clear)
-    .padding(.top, 0)
-    .padding(.horizontal, -10)
-}
-// ...existing code...
-
-// Funzione per abbreviazione giorno in inglese
-private func currentWeekdayAbbr() -> String {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "E"
-    formatter.locale = Locale(identifier: "en_US")
-    return formatter.string(from: Date())
-}
         }
         .sheet(item: $selectedTask) { task in
             TaskDetailView(task: task){
@@ -553,47 +487,45 @@ struct TaskDetailView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                // ...existing code...
-VStack(spacing: 20) {
-    VStack(alignment: .leading, spacing: 10) {
-        Text(task.name)
-            .font(.title)
-            .fontWeight(.bold)
-            .foregroundColor(.appBeige)
-        
-        if !task.description.isEmpty {
-            Text(task.description)
-                .font(.body)
-                .foregroundColor(.appBeige.opacity(0.8))
-        }
-        
-        HStack {
-            Text("Inizio: \(timeString(from: task.startTime))")
-                .font(.subheadline)
-                .foregroundColor(.appLightBlue)
-            
-            Spacer()
-            
-            Text("Fine: \(timeString(from: task.endTime))")
-                .font(.subheadline)
-                .foregroundColor(.appLightBlue)
-        }
-        
-        if !task.location.isEmpty {
-            Text("Luogo: \(task.location)")
-                .font(.subheadline)
-                .foregroundColor(.appBeige.opacity(0.8))
-        }
-    }
-    .padding()
-    .background(
-        RoundedRectangle(cornerRadius: 12)
-            .fill(Color.appDarkBlue.opacity(0.3))
-    )
-    // RIMOSSI i pulsanti di completamento e rimozione
-    Spacer()
-}
-// ...existing code...
+                VStack(spacing: 20) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(task.name)
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundColor(.appBeige)
+                        
+                        if !task.description.isEmpty {
+                            Text(task.description)
+                                .font(.body)
+                                .foregroundColor(.appBeige.opacity(0.8))
+                        }
+                        
+                        HStack {
+                            Text("Inizio: \(timeString(from: task.startTime))")
+                                .font(.subheadline)
+                                .foregroundColor(.appLightBlue)
+                            
+                            Spacer()
+                            
+                            Text("Fine: \(timeString(from: task.endTime))")
+                                .font(.subheadline)
+                                .foregroundColor(.appLightBlue)
+                        }
+                        
+                        if !task.location.isEmpty {
+                            Text("Luogo: \(task.location)")
+                                .font(.subheadline)
+                                .foregroundColor(.appBeige.opacity(0.8))
+                        }
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.appDarkBlue.opacity(0.3))
+                    )
+                    
+                    Spacer()
+                }
                 .padding()
             }
             .background(Color.appBlack)
@@ -799,7 +731,8 @@ struct ProfileView: View {
                             .font(.title)
                             .fontWeight(.bold)
                             .foregroundColor(.appBeige)
-                                                
+                        
+                       
                     }
                     
                     // Progress section
@@ -958,7 +891,7 @@ struct InterestsView: View {
                                 }
                                 .padding()
                                 .background(RoundedRectangle(cornerRadius: 12).fill(Color.appDarkBlue.opacity(0.3)))
-                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                .swipeActions {
                                     Button(role: .destructive) {
                                         taskManager.removeInterest(interest)
                                     } label: {
