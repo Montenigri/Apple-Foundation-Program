@@ -21,7 +21,9 @@ struct ContentView: View {
                         .tag(2)
                         .environmentObject(taskManager)
                 }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                .tabViewStyle(DefaultTabViewStyle())
+//                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+
             }
         }
     }
