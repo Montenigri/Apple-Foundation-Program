@@ -39,69 +39,70 @@ struct MyTimeView: View {
 
                 // Lista Task con swipe
                 List {
-                    ForEach(sortedTasks()) { task in
-                        HStack(alignment: .bottom, spacing: 12) {
-                            // Barretta verticale orario + orario in basso
-                            VStack {
-                                Spacer()
-                                Rectangle()
-                                    .fill(Color.appLightBlue)
-                                    .frame(width: 4, height: 50)
-                                    .cornerRadius(2)
-                                Text(timeString(from: task.startTime))
-                                    .font(.caption2)
-                                    .foregroundColor(.appLightBlue)
-                                    .padding(.top, 4)
-                            }
-                            // Card task
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(task.name)
-                                    .font(.headline)
-                                    .foregroundColor(.appDarkBlue)
-                                if !task.description.isEmpty {
-                                    Text(task.description)
-                                        .font(.caption)
-                                        .foregroundColor(.appDarkBlue.opacity(0.7))
-                                }
-                            }
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(task.isCompleted ? Color.appBeige.opacity(0.3) : Color.appBeige)
-                            )
-                            .opacity(task.isCompleted ? 0.5 : 1.0)
-                            Spacer()
-                        }
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            selectedTask = task
-                        }
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            // Elimina task (da destra verso sinistra)
-                            Button(role: .destructive) {
-                                taskManager.removeTask(task)
-                            } label: {
-                                Label("Elimina", systemImage: "trash")
+                ForEach(sortedTasks()) { task in
+                    HStack(alignment: .bottom, spacing: 12) {
+                        // Orario a sinistra, allineato con header
+                        Text(timeString(from: task.startTime))
+                            .font(.caption2)
+                            .foregroundColor(.appLightBlue)
+                            .frame(width: 48, alignment: .leading)
+                            .padding(.leading, 20)
+
+                        // Barretta verticale
+                        Rectangle()
+                            .fill(Color.appLightBlue)
+                            .frame(width: 4, height: 50)
+                            .cornerRadius(2)
+
+                        // Card task
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(task.name)
+                                .font(.headline)
+                                .foregroundColor(.appDarkBlue)
+                            if !task.description.isEmpty {
+                                Text(task.description)
+                                    .font(.caption)
+                                    .foregroundColor(.appDarkBlue.opacity(0.7))
                             }
                         }
-                        .swipeActions(edge: .leading, allowsFullSwipe: false) {
-                            // Completa/Da completare (da sinistra verso destra)
-                            Button {
-                                taskManager.toggleTaskCompletion(task)
-                            } label: {
-                                if task.isCompleted {
-                                    Label("Da completare", systemImage: "arrow.uturn.left")
-                                } else {
-                                    Label("Completato", systemImage: "checkmark")
-                                }
-                            }
-                            .tint(task.isCompleted ? .orange : .green)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(task.isCompleted ? Color.appBeige.opacity(0.3) : Color.appBeige)
+                        )
+                        .opacity(task.isCompleted ? 0.5 : 1.0)
+                        Spacer()
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        selectedTask = task
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            taskManager.removeTask(task)
+                        } label: {
+                            Label("Elimina", systemImage: "trash")
                         }
                     }
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
+                    .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                        Button {
+                            taskManager.toggleTaskCompletion(task)
+                        } label: {
+                            if task.isCompleted {
+                                Label("Da completare", systemImage: "arrow.uturn.left")
+                            } else {
+                                Label("Completato", systemImage: "checkmark")
+                            }
+                        }
+                        .tint(task.isCompleted ? .orange : .green)
+                    }
                 }
-                .listStyle(.plain)
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
+            }
+            .listStyle(.plain)
+            .padding(.horizontal, 10)
+
             }
         }
         .sheet(item: $selectedTask) { task in
@@ -119,7 +120,7 @@ struct MyTimeView: View {
     private func currentMonth() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
-        formatter.locale = Locale(identifier: "it_IT")
+        formatter.locale = Locale(identifier: "en_US")
         return formatter.string(from: Date())
     }
 
