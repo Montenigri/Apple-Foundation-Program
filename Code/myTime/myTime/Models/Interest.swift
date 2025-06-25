@@ -1,3 +1,5 @@
+import Foundation
+
 struct Interest: Identifiable, Codable {
     let id = UUID()
     var name: String

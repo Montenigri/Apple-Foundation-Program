@@ -1,3 +1,7 @@
+import Foundation
+import UserNotifications
+import SwiftUI
+
 class TaskManager: ObservableObject {
     @Published var tasks: [Task] = []
     @Published var interests: [Interest] = []

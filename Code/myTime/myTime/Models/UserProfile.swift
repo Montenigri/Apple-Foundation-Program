@@ -1,3 +1,5 @@
+import Foundation
+
 struct UserProfile: Codable {
     var nickname: String = ""
     var completedTasks: Int = 0
