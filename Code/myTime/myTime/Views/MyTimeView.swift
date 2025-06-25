@@ -73,6 +73,7 @@ struct MyTimeView: View {
                         .opacity(task.isCompleted ? 0.5 : 1.0)
                         Spacer()
                     }
+                    .padding(.horizontal, 16)
                     .contentShape(Rectangle())
                     .onTapGesture {
                         selectedTask = task
@@ -101,7 +102,6 @@ struct MyTimeView: View {
                 .listRowSeparator(.hidden)
             }
             .listStyle(.plain)
-            .padding(.horizontal, 10)
 
             }
         }
