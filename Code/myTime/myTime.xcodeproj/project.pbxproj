@@ -6,63 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXContainerItemProxy section */
-		CFE6211C2E06A67F00957077 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CFE621062E06A67E00957077 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CFE6210D2E06A67E00957077;
-			remoteInfo = myTime;
-		};
-		CFE621262E06A67F00957077 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CFE621062E06A67E00957077 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CFE6210D2E06A67E00957077;
-			remoteInfo = myTime;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		CFE6210E2E06A67E00957077 /* myTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = myTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CFE6211B2E06A67F00957077 /* myTimeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = myTimeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CFE621252E06A67F00957077 /* myTimeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = myTimeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6067CCE42E0ACC4D00EEDE87 /* Mytime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mytime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		CFE621102E06A67E00957077 /* myTime */ = {
+		6067CCE62E0ACC4D00EEDE87 /* Mytime */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = myTime;
-			sourceTree = "<group>";
-		};
-		CFE6211E2E06A67F00957077 /* myTimeTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = myTimeTests;
-			sourceTree = "<group>";
-		};
-		CFE621282E06A67F00957077 /* myTimeUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = myTimeUITests;
+			path = Mytime;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		CFE6210B2E06A67E00957077 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CFE621182E06A67F00957077 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CFE621222E06A67F00957077 /* Frameworks */ = {
+		6067CCE12E0ACC4D00EEDE87 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -72,22 +29,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CFE621052E06A67E00957077 = {
+		6067CCDB2E0ACC4D00EEDE87 = {
 			isa = PBXGroup;
 			children = (
-				CFE621102E06A67E00957077 /* myTime */,
-				CFE6211E2E06A67F00957077 /* myTimeTests */,
-				CFE621282E06A67F00957077 /* myTimeUITests */,
-				CFE6210F2E06A67E00957077 /* Products */,
+				6067CCE62E0ACC4D00EEDE87 /* Mytime */,
+				6067CCE52E0ACC4D00EEDE87 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		CFE6210F2E06A67E00957077 /* Products */ = {
+		6067CCE52E0ACC4D00EEDE87 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CFE6210E2E06A67E00957077 /* myTime.app */,
-				CFE6211B2E06A67F00957077 /* myTimeTests.xctest */,
-				CFE621252E06A67F00957077 /* myTimeUITests.xctest */,
+				6067CCE42E0ACC4D00EEDE87 /* Mytime.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,134 +48,64 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		CFE6210D2E06A67E00957077 /* myTime */ = {
+		6067CCE32E0ACC4D00EEDE87 /* Mytime */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CFE6212F2E06A67F00957077 /* Build configuration list for PBXNativeTarget "myTime" */;
+			buildConfigurationList = 6067CCEF2E0ACC4E00EEDE87 /* Build configuration list for PBXNativeTarget "Mytime" */;
 			buildPhases = (
-				CFE6210A2E06A67E00957077 /* Sources */,
-				CFE6210B2E06A67E00957077 /* Frameworks */,
-				CFE6210C2E06A67E00957077 /* Resources */,
+				6067CCE02E0ACC4D00EEDE87 /* Sources */,
+				6067CCE12E0ACC4D00EEDE87 /* Frameworks */,
+				6067CCE22E0ACC4D00EEDE87 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				CFE621102E06A67E00957077 /* myTime */,
+				6067CCE62E0ACC4D00EEDE87 /* Mytime */,
 			);
-			name = myTime;
+			name = Mytime;
 			packageProductDependencies = (
 			);
-			productName = myTime;
-			productReference = CFE6210E2E06A67E00957077 /* myTime.app */;
+			productName = Mytime;
+			productReference = 6067CCE42E0ACC4D00EEDE87 /* Mytime.app */;
 			productType = "com.apple.product-type.application";
-		};
-		CFE6211A2E06A67F00957077 /* myTimeTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CFE621322E06A67F00957077 /* Build configuration list for PBXNativeTarget "myTimeTests" */;
-			buildPhases = (
-				CFE621172E06A67F00957077 /* Sources */,
-				CFE621182E06A67F00957077 /* Frameworks */,
-				CFE621192E06A67F00957077 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				CFE6211D2E06A67F00957077 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				CFE6211E2E06A67F00957077 /* myTimeTests */,
-			);
-			name = myTimeTests;
-			packageProductDependencies = (
-			);
-			productName = myTimeTests;
-			productReference = CFE6211B2E06A67F00957077 /* myTimeTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		CFE621242E06A67F00957077 /* myTimeUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CFE621352E06A67F00957077 /* Build configuration list for PBXNativeTarget "myTimeUITests" */;
-			buildPhases = (
-				CFE621212E06A67F00957077 /* Sources */,
-				CFE621222E06A67F00957077 /* Frameworks */,
-				CFE621232E06A67F00957077 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				CFE621272E06A67F00957077 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				CFE621282E06A67F00957077 /* myTimeUITests */,
-			);
-			name = myTimeUITests;
-			packageProductDependencies = (
-			);
-			productName = myTimeUITests;
-			productReference = CFE621252E06A67F00957077 /* myTimeUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		CFE621062E06A67E00957077 /* Project object */ = {
+		6067CCDC2E0ACC4D00EEDE87 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
-					CFE6210D2E06A67E00957077 = {
+					6067CCE32E0ACC4D00EEDE87 = {
 						CreatedOnToolsVersion = 16.4;
-					};
-					CFE6211A2E06A67F00957077 = {
-						CreatedOnToolsVersion = 16.4;
-						TestTargetID = CFE6210D2E06A67E00957077;
-					};
-					CFE621242E06A67F00957077 = {
-						CreatedOnToolsVersion = 16.4;
-						TestTargetID = CFE6210D2E06A67E00957077;
 					};
 				};
 			};
-			buildConfigurationList = CFE621092E06A67E00957077 /* Build configuration list for PBXProject "myTime" */;
+			buildConfigurationList = 6067CCDF2E0ACC4D00EEDE87 /* Build configuration list for PBXProject "Mytime" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = CFE621052E06A67E00957077;
+			mainGroup = 6067CCDB2E0ACC4D00EEDE87;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = CFE6210F2E06A67E00957077 /* Products */;
+			productRefGroup = 6067CCE52E0ACC4D00EEDE87 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CFE6210D2E06A67E00957077 /* myTime */,
-				CFE6211A2E06A67F00957077 /* myTimeTests */,
-				CFE621242E06A67F00957077 /* myTimeUITests */,
+				6067CCE32E0ACC4D00EEDE87 /* Mytime */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		CFE6210C2E06A67E00957077 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CFE621192E06A67F00957077 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CFE621232E06A67F00957077 /* Resources */ = {
+		6067CCE22E0ACC4D00EEDE87 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -232,21 +115,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		CFE6210A2E06A67E00957077 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CFE621172E06A67F00957077 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CFE621212E06A67F00957077 /* Sources */ = {
+		6067CCE02E0ACC4D00EEDE87 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -255,21 +124,8 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		CFE6211D2E06A67F00957077 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CFE6210D2E06A67E00957077 /* myTime */;
-			targetProxy = CFE6211C2E06A67F00957077 /* PBXContainerItemProxy */;
-		};
-		CFE621272E06A67F00957077 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CFE6210D2E06A67E00957077 /* myTime */;
-			targetProxy = CFE621262E06A67F00957077 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
-		CFE6212D2E06A67F00957077 /* Debug */ = {
+		6067CCED2E0ACC4E00EEDE87 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -304,7 +160,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 8ZWY8RKP4W;
+				DEVELOPMENT_TEAM = 9Y7M99Q67Z;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -333,7 +189,7 @@
 			};
 			name = Debug;
 		};
-		CFE6212E2E06A67F00957077 /* Release */ = {
+		6067CCEE2E0ACC4E00EEDE87 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -368,7 +224,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 8ZWY8RKP4W;
+				DEVELOPMENT_TEAM = 9Y7M99Q67Z;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -390,14 +246,14 @@
 			};
 			name = Release;
 		};
-		CFE621302E06A67F00957077 /* Debug */ = {
+		6067CCF02E0ACC4E00EEDE87 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8ZWY8RKP4W;
+				DEVELOPMENT_TEAM = 9Y7M99Q67Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -410,7 +266,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = wellness.myTime;
+				PRODUCT_BUNDLE_IDENTIFIER = it.wellness.Mytime;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -418,14 +274,14 @@
 			};
 			name = Debug;
 		};
-		CFE621312E06A67F00957077 /* Release */ = {
+		6067CCF12E0ACC4E00EEDE87 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8ZWY8RKP4W;
+				DEVELOPMENT_TEAM = 9Y7M99Q67Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -438,126 +294,36 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = wellness.myTime;
+				PRODUCT_BUNDLE_IDENTIFIER = it.wellness.Mytime;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		CFE621332E06A67F00957077 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8ZWY8RKP4W;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = wellness.myTimeTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/myTime.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/myTime";
-			};
-			name = Debug;
-		};
-		CFE621342E06A67F00957077 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8ZWY8RKP4W;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = wellness.myTimeTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/myTime.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/myTime";
-			};
-			name = Release;
-		};
-		CFE621362E06A67F00957077 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8ZWY8RKP4W;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = wellness.myTimeUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = myTime;
-			};
-			name = Debug;
-		};
-		CFE621372E06A67F00957077 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8ZWY8RKP4W;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = wellness.myTimeUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = myTime;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CFE621092E06A67E00957077 /* Build configuration list for PBXProject "myTime" */ = {
+		6067CCDF2E0ACC4D00EEDE87 /* Build configuration list for PBXProject "Mytime" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CFE6212D2E06A67F00957077 /* Debug */,
-				CFE6212E2E06A67F00957077 /* Release */,
+				6067CCED2E0ACC4E00EEDE87 /* Debug */,
+				6067CCEE2E0ACC4E00EEDE87 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CFE6212F2E06A67F00957077 /* Build configuration list for PBXNativeTarget "myTime" */ = {
+		6067CCEF2E0ACC4E00EEDE87 /* Build configuration list for PBXNativeTarget "Mytime" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CFE621302E06A67F00957077 /* Debug */,
-				CFE621312E06A67F00957077 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CFE621322E06A67F00957077 /* Build configuration list for PBXNativeTarget "myTimeTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CFE621332E06A67F00957077 /* Debug */,
-				CFE621342E06A67F00957077 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CFE621352E06A67F00957077 /* Build configuration list for PBXNativeTarget "myTimeUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CFE621362E06A67F00957077 /* Debug */,
-				CFE621372E06A67F00957077 /* Release */,
+				6067CCF02E0ACC4E00EEDE87 /* Debug */,
+				6067CCF12E0ACC4E00EEDE87 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = CFE621062E06A67E00957077 /* Project object */;
+	rootObject = 6067CCDC2E0ACC4D00EEDE87 /* Project object */;
 }

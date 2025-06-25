@@ -1,14 +1,14 @@
 //
-//  myTimeApp.swift
-//  myTime
+//  MytimeApp.swift
+//  Mytime
 //
-//  Created by Gabriele Musso on 21/06/25.
+//  Created by angelo galante on 24/06/25.
 //
 
 import SwiftUI
 
 @main
-struct myTimeApp: App {
+struct MytimeApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
