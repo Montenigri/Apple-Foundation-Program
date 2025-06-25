@@ -1,7 +1,7 @@
 import SwiftUI
 struct CustomSlider: View {
     @Binding var selectedTab: Int
-    let tabs = ["MyTime", "Add Task", "Profile"]
+    let tabs = ["MyTime", "Add Task", "Progress"]
     
     var body: some View {
         HStack(spacing: 0) {
