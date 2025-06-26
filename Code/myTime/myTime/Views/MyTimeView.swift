@@ -37,64 +37,50 @@ struct MyTimeView: View {
 
                                 if !tasks.isEmpty {
                                     VStack(alignment: .leading, spacing: 0) {
-                                        // Header giorno - layout a bandiera
-                                        HStack {
-                                            VStack(alignment: .leading, spacing: 2) {
-                                                Text(dayName(from: day))
-                                                    .font(.caption)
-                                                    .foregroundColor(.appBeige.opacity(0.7))
-                                                Text("\(Calendar.current.component(.day, from: day))")
-                                                    .font(.title2)
-                                                    .fontWeight(.bold)
-                                                    .foregroundColor(.appBeige)
-                                            }
-                                            .frame(width: 60, alignment: .leading)
+                                        
+                                        // Header giorno compatto e leggibile
+                                        
+                                        HStack(spacing: 6) {
+                                            Text(dayName(from: day).uppercased()) // Abbreviazione in MAIUSCOLO
+                                                .font(.system(size: 16, weight: .light))
+                                                .foregroundColor(.appBeige)
+
+                                            Text("\(Calendar.current.component(.day, from: day))")
+                                                .font(.system(size: 30, weight: .bold))
+                                                .foregroundColor(.appBeige)
+
+                                            // Linea orizzontale subito a destra del numero
+                                            Rectangle()
+                                                .fill(
+                                                    LinearGradient(
+                                                        gradient: Gradient(stops: [
+                                                            .init(color: Color.appBeige.opacity(1.0), location: 0),
+                                                            .init(color: Color.appBeige.opacity(0.0), location: 1)
+                                                        ]),
+                                                        startPoint: .leading,
+                                                        endPoint: .trailing
+                                                    )
+                                                )
+                                                .frame(height: 2)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+
+
                                             Spacer()
                                         }
                                         .padding(.horizontal)
                                         .padding(.bottom, 12)
 
+
                                         // Tasks del giorno
                                         ForEach(tasks.sorted(by: { $0.startTime < $1.startTime })) { task in
-                                            HStack(alignment: .bottom, spacing: 12) {
-                                                // Orario a sinistra
-                                                Text(timeString(from: task.startTime))
-                                                    .font(.caption2)
-                                                    .foregroundColor(.appLightBlue)
-                                                    .frame(width: 48, alignment: .leading)
-                                                    .padding(.leading, 8)
-
-                                                // Barretta verticale
-                                                Rectangle()
-                                                    .fill(Color.appLightBlue)
-                                                    .frame(width: 4, height: 50)
-                                                    .cornerRadius(2)
-
-                                                // Card task
-                                                VStack(alignment: .leading, spacing: 4) {
-                                                    Text(task.name)
-                                                        .font(.headline)
-                                                        .foregroundColor(.appDarkBlue)
-                                                    if !task.description.isEmpty {
-                                                        Text(task.description)
-                                                            .font(.caption)
-                                                            .foregroundColor(.appDarkBlue.opacity(0.7))
-                                                    }
-                                                }
-                                                .padding()
-                                                .background(
-                                                    RoundedRectangle(cornerRadius: 12)
-                                                        .fill(task.isCompleted ? Color.appBeige.opacity(0.3) : Color.appBeige)
-                                                )
-                                                .opacity(task.isCompleted ? 0.5 : 1.0)
-                                                Spacer()
-                                            }
-                                            .padding(.horizontal, 16)
-                                            .contentShape(Rectangle())
-                                            .onTapGesture {
+                                            TaskRowView(task: task) {
                                                 selectedTask = task
                                                 showDetail = true
                                             }
+
+                                            .padding(.horizontal, 16)
+                                            .padding(.bottom, 16) // spazio tra i task
+                                            .contentShape(Rectangle())
                                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                                 Button(role: .destructive) {
                                                     taskManager.removeTask(task)
@@ -115,6 +101,7 @@ struct MyTimeView: View {
                                                 .tint(task.isCompleted ? .orange : .green)
                                             }
                                         }
+
                                     }
                                 }
                             }
@@ -141,7 +128,7 @@ struct MyTimeView: View {
 
     private func dayName(from date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "EEE"
+        formatter.dateFormat = "EEE" // Esempio: "Wed"
         formatter.locale = Locale(identifier: "en_US")
         return formatter.string(from: date)
     }
@@ -152,3 +139,11 @@ struct MyTimeView: View {
         return formatter.string(from: date)
     }
 }
+
+
+
+#Preview{
+    MyTimeView().environmentObject(TaskManager())
+}
+
+

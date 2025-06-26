@@ -30,3 +30,5 @@ struct CustomSlider: View {
         .padding(.horizontal, 20)
     }
 }
+
+
