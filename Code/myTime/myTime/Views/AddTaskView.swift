@@ -2,9 +2,10 @@ import SwiftUI
 
 struct AddTaskView: View {
     @EnvironmentObject var taskManager: TaskManager
+    @Environment(\.dismiss) private var dismiss
     @State private var name = ""
     @State private var description = ""
-    @State private var duration = Date()
+    @State private var duration = Int(30)
     @State private var location = ""
     @State private var startTime = Date()
     @State private var showingAlert = false
@@ -13,78 +14,92 @@ struct AddTaskView: View {
     var body: some View {
         ZStack {
             Color.appBlack.ignoresSafeArea()
-            ScrollView {
-                VStack(spacing: 20) {
-                    VStack(alignment: .leading, spacing: 15) {
-                        Text("Nuovo Task")
-                            .font(.title)
-                            .fontWeight(.bold)
+            VStack(spacing: 0) {
+                HStack {
+                    Spacer()
+                    Button(action: { dismiss() }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .resizable()
+                            .frame(width: 28, height: 28)
                             .foregroundColor(.appBeige)
-
-                        // Name field
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Nome attività")
-                                .font(.subheadline)
-                                .foregroundColor(.appBeige)
-                            TextField("Inserisci nome", text: $name)
-                                .textFieldStyle(CustomTextFieldStyle())
-                        }
-
-                        // Description field
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Descrizione")
-                                .font(.subheadline)
-                                .foregroundColor(.appBeige)
-                            TextField("Inserisci descrizione", text: $description, axis: .vertical)
-                                .textFieldStyle(CustomTextFieldStyle())
-                                .lineLimit(3...6)
-                        }
-
-                        // Start time
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Orario di inizio")
-                                .font(.subheadline)
-                                .foregroundColor(.appBeige)
-                            DatePicker("", selection: $startTime, displayedComponents: [.date, .hourAndMinute])
-                                .datePickerStyle(CompactDatePickerStyle())
-                                .colorScheme(.dark)
-                        }
-
-                        // Duration
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Durata")
-                                .font(.subheadline)
-                                .foregroundColor(.appBeige)
-                            DatePicker("", selection: $duration, displayedComponents: .hourAndMinute)
-                                .datePickerStyle(WheelDatePickerStyle())
-                                .labelsHidden()
-                                .frame(height: 100)
-                        }
-
-                        // Location field
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Luogo")
-                                .font(.subheadline)
-                                .foregroundColor(.appBeige)
-                            TextField("Inserisci luogo", text: $location)
-                                .textFieldStyle(CustomTextFieldStyle())
-                        }
-
-                        // Add button
-                        Button("Aggiungi Task") {
-                            addTask()
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.appDarkBlue)
-                        )
-                        .foregroundColor(.appBeige)
-                        .disabled(name.isEmpty)
-                        .opacity(name.isEmpty ? 0.5 : 1.0)
+                            .padding(.top, 8)
+                            .padding(.trailing, 8)
                     }
-                    .padding()
+                }
+                .zIndex(1)
+                ScrollView {
+                    VStack(spacing: 20) {
+                        VStack(alignment: .leading, spacing: 15) {
+                            Text("Nuovo Task")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundColor(.appBeige)
+
+                            // Name field
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text("Nome attività")
+                                    .font(.subheadline)
+                                    .foregroundColor(.appBeige)
+                                TextField("Inserisci nome", text: $name)
+                                    .textFieldStyle(CustomTextFieldStyle())
+                            }
+
+                            // Description field
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text("Descrizione")
+                                    .font(.subheadline)
+                                    .foregroundColor(.appBeige)
+                                TextField("Inserisci descrizione", text: $description, axis: .vertical)
+                                    .textFieldStyle(CustomTextFieldStyle())
+                                    .lineLimit(3...6)
+                            }
+
+                            // Start time
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text("Orario di inizio")
+                                    .font(.subheadline)
+                                    .foregroundColor(.appBeige)
+                                DatePicker("", selection: $startTime, displayedComponents: [.date, .hourAndMinute])
+                                    .datePickerStyle(CompactDatePickerStyle())
+                                    .colorScheme(.dark)
+                            }
+
+                            // Duration
+                            Section(header: Text("Durata (minuti)").foregroundColor(.appBeige)) {
+                                Stepper("\(duration) minuti", value: $duration, in: 5...180, step: 5)
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .fill(Color.appBeige)
+                                    )
+                                    .foregroundColor(.appBlack)
+                            }
+
+                            // Location field
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text("Luogo")
+                                    .font(.subheadline)
+                                    .foregroundColor(.appBeige)
+                                TextField("Inserisci luogo", text: $location)
+                                    .textFieldStyle(CustomTextFieldStyle())
+                            }
+
+                            // Add button
+                            Button("Aggiungi Task") {
+                                addTask()
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.appDarkBlue)
+                            )
+                            .foregroundColor(.appBeige)
+                            .disabled(name.isEmpty)
+                            .opacity(name.isEmpty ? 0.5 : 1.0)
+                        }
+                        .padding()
+                    }
                 }
             }
         }
@@ -97,8 +112,7 @@ struct AddTaskView: View {
 
     private func addTask() {
         let calendar = Calendar.current
-        let durationComponents = calendar.dateComponents([.hour, .minute], from: duration)
-        let durationInSeconds = TimeInterval((durationComponents.hour ?? 0) * 3600 + (durationComponents.minute ?? 0) * 60)
+        let durationInSeconds = TimeInterval(duration * 60)
 
         let newTask = Task(
             name: name,
@@ -129,7 +143,7 @@ struct AddTaskView: View {
             // Reset form
             name = ""
             description = ""
-            duration = Date()
+            duration = 30
             location = ""
             startTime = Date()
 

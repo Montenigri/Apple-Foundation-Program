@@ -4,66 +4,77 @@ struct TaskDetailView: View {
     let task: Task
     let onDelete: () -> Void
     @EnvironmentObject var taskManager: TaskManager
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @State private var showingDeleteAlert = false
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text(task.name)
-                            .font(.title)
-                            .fontWeight(.bold)
+            VStack(spacing: 0) {
+                HStack {
+                    Spacer()
+                    Button(action: { dismiss() }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .resizable()
+                            .frame(width: 28, height: 28)
                             .foregroundColor(.appBeige)
+                            .padding(.top, 8)
+                            .padding(.trailing, 8)
+                    }
+                }
+                .zIndex(1)
+                ScrollView {
+                    VStack(spacing: 20) {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text(task.name)
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundColor(.appBeige)
 
-                        if !task.description.isEmpty {
-                            Text(task.description)
-                                .font(.body)
-                                .foregroundColor(.appBeige.opacity(0.8))
+                            if !task.description.isEmpty {
+                                Text(task.description)
+                                    .font(.body)
+                                    .foregroundColor(.appBeige.opacity(0.8))
+                            }
+
+                            HStack {
+                                Text("Inizio: \(timeString(from: task.startTime))")
+                                    .font(.subheadline)
+                                    .foregroundColor(.appLightBlue)
+
+                                Spacer()
+
+                                Text("Fine: \(timeString(from: task.endTime))")
+                                    .font(.subheadline)
+                                    .foregroundColor(.appLightBlue)
+                            }
+
+                            if !task.location.isEmpty {
+                                Text("Luogo: \(task.location)")
+                                    .font(.subheadline)
+                                    .foregroundColor(.appBeige.opacity(0.8))
+                            }
                         }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.appDarkBlue.opacity(0.3))
+                        )
 
-                        HStack {
-                            Text("Inizio: \(timeString(from: task.startTime))")
-                                .font(.subheadline)
-                                .foregroundColor(.appLightBlue)
-
-                            Spacer()
-
-                            Text("Fine: \(timeString(from: task.endTime))")
-                                .font(.subheadline)
-                                .foregroundColor(.appLightBlue)
-                        }
-
-                        if !task.location.isEmpty {
-                            Text("Luogo: \(task.location)")
-                                .font(.subheadline)
-                                .foregroundColor(.appBeige.opacity(0.8))
-                        }
+                        Spacer()
                     }
                     .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.appDarkBlue.opacity(0.3))
-                    )
-
-                    Spacer()
                 }
-                .padding()
             }
             .background(Color.appBlack)
             .navigationTitle("Dettagli Task")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(trailing: Button("Chiudi") {
-                presentationMode.wrappedValue.dismiss()
-            })
         }
         .alert("Conferma rimozione", isPresented: $showingDeleteAlert) {
             Button("Annulla", role: .cancel) { }
             Button("Rimuovi", role: .destructive) {
                 taskManager.removeTask(task)
                 onDelete()
-                presentationMode.wrappedValue.dismiss()
+                dismiss()
             }
         } message: {
             Text("Sei sicuro di voler rimuovere questo task?")

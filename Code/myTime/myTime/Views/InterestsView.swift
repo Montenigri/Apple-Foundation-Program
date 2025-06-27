@@ -2,7 +2,7 @@ import SwiftUI
 
 struct InterestsView: View {
     @EnvironmentObject var taskManager: TaskManager
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @State private var showingAddInterest = false
 
     var body: some View {
@@ -10,7 +10,20 @@ struct InterestsView: View {
             ZStack {
                 Color.appBlack.ignoresSafeArea()
 
-                VStack {
+                VStack(spacing: 0) {
+                    HStack {
+                        Spacer()
+                        Button(action: { dismiss() }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .resizable()
+                                .frame(width: 28, height: 28)
+                                .foregroundColor(.appBeige)
+                                .padding(.top, 8)
+                                .padding(.trailing, 8)
+                        }
+                    }
+                    .zIndex(1)
+
                     if taskManager.interests.isEmpty {
                         Text("Clicca sul pulsante per aggiungere un task da suggerire")
                             .foregroundColor(.appBeige)

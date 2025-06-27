@@ -3,7 +3,14 @@ import SwiftUI
 struct TaskRowView: View {
     let task: Task
     let onTap: () -> Void
-
+    let descriptionLimit: Int
+    
+    init(task: Task, descriptionLimit: Int = 30, onTap: @escaping () -> Void) {
+        self.task = task
+        self.descriptionLimit = descriptionLimit
+        self.onTap = onTap
+    }
+    
     var body: some View {
         Button(action: onTap) {
             HStack(alignment: .top, spacing: 0) {
@@ -19,7 +26,6 @@ struct TaskRowView: View {
                 }
                 .frame(width: 50, alignment: .trailing)
                 .padding(.top, 12)
-
 
                 Spacer().frame(width: 12)
 
@@ -39,9 +45,11 @@ struct TaskRowView: View {
                             .strikethrough(task.isCompleted)
 
                         if !task.description.isEmpty {
-                            Text(task.description)
-                                .font(.system(size: 13))
-                                .foregroundColor(task.isCompleted ? .gray.opacity(0.5) : .appDarkBlue.opacity(0.75))
+                            Text(truncated(task.description, limit: descriptionLimit))
+                                .font(.caption)
+                                .foregroundColor(.appDarkBlue.opacity(0.7))
+                                .lineLimit(1)
+                                .truncationMode(.tail)
                         }
 
                         if !task.location.isEmpty {
@@ -69,6 +77,14 @@ struct TaskRowView: View {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
         return formatter.string(from: date)
+    }
+    func truncated(_ text: String, limit: Int) -> String {
+        if text.count > limit {
+            let index = text.index(text.startIndex, offsetBy: limit)
+            return String(text[..<index]) + "..."
+        } else {
+            return text
+        }
     }
 }
 
