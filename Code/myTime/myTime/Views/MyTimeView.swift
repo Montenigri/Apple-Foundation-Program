@@ -6,8 +6,10 @@ struct MyTimeView: View {
     @State private var showDetail = false
     @State private var currentVisibleMonth: String = ""
 
-    // Visualizza 30 giorni prima e 30 dopo oggi
-    let daysRange = (-15)...15
+    // Paging
+    @State private var daysBefore = 15
+    @State private var daysAfter = 15
+    private let pageSize = 15
 
     struct DaySection: Identifiable {
         let id = UUID()
@@ -15,12 +17,11 @@ struct MyTimeView: View {
         let isFirstOfMonth: Bool
     }
 
-    // Prepara le sezioni giorno con flag per cambio mese
     var daySections: [DaySection] {
         var result: [DaySection] = []
         var lastMonth: Int? = nil
         var lastYear: Int? = nil
-        for offset in daysRange {
+        for offset in (-daysBefore)...daysAfter {
             let day = Calendar.current.date(byAdding: .day, value: offset, to: Date())!
             let month = Calendar.current.component(.month, from: day)
             let year = Calendar.current.component(.year, from: day)
@@ -55,13 +56,13 @@ struct MyTimeView: View {
                     .background(Color.appBlack)
                     .zIndex(1)
 
+
                     ScrollViewReader { scrollProxy in
                         ScrollView {
                             LazyVStack(spacing: 24, pinnedViews: []) {
-                                ForEach(daySections) { section in
+                                ForEach(Array(daySections.enumerated()), id: \.element.id) { index, section in
                                     let day = section.date
                                     let tasks = taskManager.getTasksForDate(day)
-                                    // Header mese allineato a sinistra
                                     if section.isFirstOfMonth {
                                         Text(monthYearString(from: day))
                                             .font(.title2)
@@ -70,51 +71,41 @@ struct MyTimeView: View {
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                             .padding(.horizontal)
                                             .padding(.top, 10)
-                                            .background(
-                                                GeometryReader { geo in
-                                                    Color.clear
-                                                        .onAppear {
-                                                            // Aggiorna il mese nell'header quando il mese entra in vista
-                                                            currentVisibleMonth = monthYearString(from: day)
-                                                        }
-                                                        .onChange(of: geo.frame(in: .named("scroll")).minY) { value in
-                                                            if value < 100 && value > -100 {
-                                                                currentVisibleMonth = monthYearString(from: day)
-                                                            }
-                                                        }
-                                                }
-                                                .frame(height: 0)
-                                            )
                                     }
-                                    if !tasks.isEmpty {
-                                        VStack(alignment: .leading, spacing: 0) {
-                                            // Header giorno
-                                            HStack(spacing: 6) {
-                                                Text(dayName(from: day).uppercased())
-                                                    .font(.system(size: 16, weight: .light))
-                                                    .foregroundColor(.appBeige)
-                                                Text("\(Calendar.current.component(.day, from: day))")
-                                                    .font(.system(size: 30, weight: .bold))
-                                                    .foregroundColor(.appBeige)
-                                                Rectangle()
-                                                    .fill(
-                                                        LinearGradient(
-                                                            gradient: Gradient(stops: [
-                                                                .init(color: Color.appBeige.opacity(1.0), location: 0),
-                                                                .init(color: Color.appBeige.opacity(0.0), location: 1)
-                                                            ]),
-                                                            startPoint: .leading,
-                                                            endPoint: .trailing
-                                                        )
+                                    VStack(alignment: .leading, spacing: 0) {
+                                        // Header giorno
+                                        HStack(spacing: 6) {
+                                            Text(dayName(from: day).uppercased())
+                                                .font(.system(size: 16, weight: .light))
+                                                .foregroundColor(.appBeige)
+                                            Text("\(Calendar.current.component(.day, from: day))")
+                                                .font(.system(size: 30, weight: .bold))
+                                                .foregroundColor(.appBeige)
+                                            Rectangle()
+                                                .fill(
+                                                    LinearGradient(
+                                                        gradient: Gradient(stops: [
+                                                            .init(color: Color.appBeige.opacity(1.0), location: 0),
+                                                            .init(color: Color.appBeige.opacity(0.0), location: 1)
+                                                        ]),
+                                                        startPoint: .leading,
+                                                        endPoint: .trailing
                                                     )
-                                                    .frame(height: 2)
-                                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                                Spacer()
-                                            }
-                                            .padding(.horizontal)
-                                            .padding(.bottom, 12)
+                                                )
+                                                .frame(height: 2)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                            Spacer()
+                                        }
+                                        .padding(.horizontal)
+                                        .padding(.bottom, 12)
 
-                                            // Lista task del giorno
+                                        // Lista task del giorno o messaggio vuoto
+                                        if tasks.isEmpty {
+                                            Text("Nessun impegno per questo giorno")
+                                                .foregroundColor(.appBeige.opacity(0.5))
+                                                .padding(.horizontal)
+                                                .padding(.bottom, 24)
+                                        } else {
                                             List {
                                                 ForEach(tasks.sorted(by: { $0.startTime < $1.startTime })) { task in
                                                     TaskRowView(task: task, descriptionLimit: 60) {
@@ -150,6 +141,25 @@ struct MyTimeView: View {
                                             .frame(height: CGFloat(tasks.count) * 80)
                                             .background(Color.clear)
                                         }
+                                    }
+                                    // Paging logic invariata
+                                    if index == 2 {
+                                        Color.clear
+                                            .frame(height: 1)
+                                            .onAppear {
+                                                if daysBefore < 365 {
+                                                    daysBefore += pageSize
+                                                }
+                                            }
+                                    }
+                                    if index == daySections.count - 3 {
+                                        Color.clear
+                                            .frame(height: 1)
+                                            .onAppear {
+                                                if daysAfter < 365 {
+                                                    daysAfter += pageSize
+                                                }
+                                            }
                                     }
                                 }
                             }
