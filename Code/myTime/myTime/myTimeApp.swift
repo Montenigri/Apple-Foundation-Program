@@ -6,12 +6,32 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 @main
-struct MytimeApp: App {
+struct MyTimeApp: App {
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if hasSeenOnboarding {
+                ContentView()
+                    .onAppear {
+                        requestNotificationPermission()
+                    }
+            } else {
+                OnboardingView(hasSeenOnboarding: $hasSeenOnboarding)
+            }
+        }
+    }
+    
+    func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            if granted {
+                print("Notification permission granted")
+            } else if let error = error {
+                print("Notification permission error: \(error.localizedDescription)")
+            }
         }
     }
 }
