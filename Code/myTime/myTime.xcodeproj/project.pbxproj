@@ -9,6 +9,7 @@
 /* Begin PBXFileReference section */
 		6067CCE42E0ACC4D00EEDE87 /* Mytime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mytime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60983F7B2E0BF007002D86D4 /* myTime.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = myTime.xcodeproj; sourceTree = SOURCE_ROOT; };
+		60C1ECD82E0F3DD00060B823 /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = System/Library/Frameworks/Charts.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -35,6 +36,7 @@
 			children = (
 				60983F7B2E0BF007002D86D4 /* myTime.xcodeproj */,
 				6067CCE62E0ACC4D00EEDE87 /* Mytime */,
+				60C1ECD72E0F3DD00060B823 /* Frameworks */,
 				6067CCE52E0ACC4D00EEDE87 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -50,6 +52,14 @@
 		60983F9D2E0BF167002D86D4 /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
+			sourceTree = "<group>";
+		};
+		60C1ECD72E0F3DD00060B823 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				60C1ECD82E0F3DD00060B823 /* Charts.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,7 +276,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8ZWY8RKP4W;
+				DEVELOPMENT_TEAM = 9Y7M99Q67Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -279,7 +289,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "gabriele-musso";
+				PRODUCT_BUNDLE_IDENTIFIER = "angelo-galante";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -294,7 +304,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8ZWY8RKP4W;
+				DEVELOPMENT_TEAM = 9Y7M99Q67Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -307,7 +317,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "gabriele-musso";
+				PRODUCT_BUNDLE_IDENTIFIER = "angelo-galante";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

@@ -9,6 +9,10 @@ struct Task: Identifiable, Codable {
     var startTime: Date
     var isCompleted: Bool = false
     var isSuggested: Bool = false
+    var estimatedTime: Double {
+        return duration / 3600
+    }
+
     var endTime: Date {
         return startTime.addingTimeInterval(duration)
     }

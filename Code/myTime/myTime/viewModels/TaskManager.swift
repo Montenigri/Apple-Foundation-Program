@@ -212,12 +212,29 @@ class TaskManager: ObservableObject {
     }
     func toggleTaskCompletion(_ task: Task) {
         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+            let wasCompleted = tasks[index].isCompleted
             tasks[index].isCompleted.toggle()
+
+            var updatedProfile = profile
+
+            if tasks[index].isCompleted && !wasCompleted {
+                updatedProfile.completedTasks += 1
+            } else if !tasks[index].isCompleted && wasCompleted {
+                updatedProfile.completedTasks = max(updatedProfile.completedTasks - 1, 0)
+            }
+
+            profile = updatedProfile // Riassegno per triggerare @Published
+
+            saveData()
         }
     }
+
+
 
     func getTasksForDate(_ date: Date) -> [Task] {
         let calendar = Calendar.current
         return tasks.filter { calendar.isDate($0.startTime, inSameDayAs: date) }
     }
+    
+    
 }
