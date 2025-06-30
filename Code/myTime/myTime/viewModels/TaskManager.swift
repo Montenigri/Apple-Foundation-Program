@@ -22,65 +22,8 @@ class TaskManager: ObservableObject {
             task.isSuggested && days.contains(where: { calendar.isDate($0, inSameDayAs: task.startTime) })
         }
         for day in days {
-            let dayTasks = tasks.filter { calendar.isDate($0.startTime, inSameDayAs: day) && !$0.isSuggested }
-            if !dayTasks.isEmpty { continue } // Se ci sono task utente, non suggerire
-            // Calcola slot disponibili tra fine sonno e inizio sonno, escludendo lavoro
-            let sleepStart = calendar.date(bySettingHour: calendar.component(.hour, from: profile.sleepStart), minute: calendar.component(.minute, from: profile.sleepStart), second: 0, of: day)!
-            let sleepEnd = calendar.date(bySettingHour: calendar.component(.hour, from: profile.sleepEnd), minute: calendar.component(.minute, from: profile.sleepEnd), second: 0, of: day)!
-            let workStart = calendar.date(bySettingHour: calendar.component(.hour, from: profile.workStart), minute: calendar.component(.minute, from: profile.workStart), second: 0, of: day)!
-            let workEnd = calendar.date(bySettingHour: calendar.component(.hour, from: profile.workEnd), minute: calendar.component(.minute, from: profile.workEnd), second: 0, of: day)!
-            // Slot mattina: sleepEnd -> workStart
-            var slots: [(start: Date, end: Date)] = []
-            if workStart > sleepEnd {
-                slots.append((sleepEnd, workStart))
-            }
-            // Slot pomeriggio: workEnd -> sleepStart
-            if sleepStart > workEnd {
-                slots.append((workEnd, sleepStart))
-            }
-            // Per ogni slot, suggerisci interessi in base a preferenza e timeSlot
-            var suggestions: [Task] = []
-            for slot in slots {
-                let availableTime = slot.end.timeIntervalSince(slot.start)
-                if availableTime < 900 { continue }
-                var currentTime = slot.start
-                var remainingTime = availableTime
-                let interestsByPreference = interests
-                    .filter { interest in
-                        let hour = calendar.component(.hour, from: currentTime)
-                        switch interest.timeSlot.lowercased() {
-                        case "morning":
-                            return hour >= 6 && hour < 12
-                        case "afternoon":
-                            return hour >= 12 && hour < 18
-                        case "evening":
-                            return hour >= 18 && hour < 23
-                        case "any":
-                            return true
-                        default:
-                            return true
-                        }
-                    }
-                    .sorted { $0.preferenceLevel > $1.preferenceLevel }
-                for interest in interestsByPreference {
-                    if interest.duration <= remainingTime {
-                        let newTask = Task(
-                            name: interest.name,
-                            description: "Suggerimento basato sui tuoi interessi",
-                            duration: interest.duration,
-                            location: "",
-                            startTime: currentTime,
-                            isSuggested: true
-                        )
-                        suggestions.append(newTask)
-                        currentTime = currentTime.addingTimeInterval(interest.duration)
-                        remainingTime -= interest.duration
-                    }
-                }
-            }
-            tasks.append(contentsOf: suggestions)
+            recalculateSuggestionsForDay(day)
         }
-        saveData()
     }
     
     /// Quando aggiungi un task, rimuovi eventuali suggerimenti sovrapposti e ricalcola per il giorno
@@ -106,8 +49,87 @@ class TaskManager: ObservableObject {
         let nextDay = calendar.date(byAdding: .day, value: 1, to: day)!
         // Rimuovi suggerimenti di quel giorno
         tasks.removeAll { $0.isSuggested && $0.startTime >= day && $0.startTime < nextDay }
-        // ...puoi riusare la logica di recalculateSuggestionsForNextThreeDays ma solo per quel giorno...
-        // (per brevità, puoi estrarre la logica in una funzione privata se vuoi pulizia)
+        // Trova tutti i task utente del giorno (escludi suggeriti)
+        let dayTasks = tasks.filter { calendar.isDate($0.startTime, inSameDayAs: day) && !$0.isSuggested }
+        // Calcola slot disponibili tra fine sonno e inizio sonno, escludendo lavoro e task utente
+        let sleepStart = calendar.date(bySettingHour: calendar.component(.hour, from: profile.sleepStart), minute: calendar.component(.minute, from: profile.sleepStart), second: 0, of: day)!
+        let sleepEnd = calendar.date(bySettingHour: calendar.component(.hour, from: profile.sleepEnd), minute: calendar.component(.minute, from: profile.sleepEnd), second: 0, of: day)!
+        let workStart = calendar.date(bySettingHour: calendar.component(.hour, from: profile.workStart), minute: calendar.component(.minute, from: profile.workStart), second: 0, of: day)!
+        let workEnd = calendar.date(bySettingHour: calendar.component(.hour, from: profile.workEnd), minute: calendar.component(.minute, from: profile.workEnd), second: 0, of: day)!
+        // Costruisci blocchi occupati: sonno, lavoro, task utente
+        var busyBlocks: [(start: Date, end: Date)] = []
+        // Sonno: da sleepStart a sleepEnd (gestione overnight)
+        if sleepEnd > sleepStart {
+            busyBlocks.append((sleepStart, sleepEnd))
+        } else {
+            // Sonno attraversa la mezzanotte
+            busyBlocks.append((sleepStart, calendar.date(byAdding: .day, value: 1, to: sleepEnd)!))
+        }
+        // Lavoro
+        if workEnd > workStart {
+            busyBlocks.append((workStart, workEnd))
+        }
+        // Task utente
+        for t in dayTasks {
+            busyBlocks.append((t.startTime, t.endTime))
+        }
+        // Ordina i blocchi occupati
+        busyBlocks.sort { $0.start < $1.start }
+        // Trova slot liberi tra i blocchi occupati
+        var freeSlots: [(start: Date, end: Date)] = []
+        var cursor = day
+        for block in busyBlocks {
+            if block.start > cursor, block.start.timeIntervalSince(cursor) >= 900 {
+                freeSlots.append((cursor, block.start))
+            }
+            cursor = max(cursor, block.end)
+        }
+        // Ultimo slot fino a fine giornata
+        if nextDay > cursor, nextDay.timeIntervalSince(cursor) >= 900 {
+            freeSlots.append((cursor, nextDay))
+        }
+        // Per ogni slot libero, suggerisci interessi in base a preferenza e timeSlot
+        var suggestions: [Task] = []
+        for slot in freeSlots {
+            let availableTime = slot.end.timeIntervalSince(slot.start)
+            if availableTime < 900 { continue }
+            var currentTime = slot.start
+            var remainingTime = availableTime
+            let interestsByPreference = interests
+                .filter { interest in
+                    let hour = calendar.component(.hour, from: currentTime)
+                    switch interest.timeSlot.lowercased() {
+                    case "morning":
+                        return hour >= 6 && hour < 12
+                    case "afternoon":
+                        return hour >= 12 && hour < 18
+                    case "evening":
+                        return hour >= 18 && hour < 23
+                    case "any":
+                        return true
+                    default:
+                        return true
+                    }
+                }
+                .sorted { $0.preferenceLevel > $1.preferenceLevel }
+            for interest in interestsByPreference {
+                if interest.duration <= remainingTime {
+                    let newTask = Task(
+                        name: interest.name,
+                        description: "Suggerimento basato sui tuoi interessi",
+                        duration: interest.duration,
+                        location: "",
+                        startTime: currentTime,
+                        isSuggested: true
+                    )
+                    suggestions.append(newTask)
+                    currentTime = currentTime.addingTimeInterval(interest.duration)
+                    remainingTime -= interest.duration
+                }
+            }
+        }
+        tasks.append(contentsOf: suggestions)
+        saveData()
     }
     
     func completeTask(_ task: Task) {
