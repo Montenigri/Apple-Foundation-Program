@@ -33,35 +33,35 @@ struct OnboardingView: View {
 
     let onboardingPages = [
         OnboardingPage(
-            title: "Benvenuto in MyTime",
-            description: "Recupera il controllo del tuo tempo e ottimizza i momenti liberi della giornata in base ai tuoi interessi.",
+            title: "Welcome in MyTime",
+            description: "Take back control of your time and optimize your free moments during the day according to your interests.",
             imageName: "logoCless", // Ora userà l'immagine da Assets
             gifName: nil,
             isWelcome: true
         ),
         OnboardingPage(
-            title: "Organizza il tuo tempo",
-            description: "Nella schermata MyTime troverai i task configurati e quelli suggeriti.",
+            title: "Organize your time",
+            description: "In the MyTime screen, you will find the configured tasks and the suggested ones.",
             imageName: "calendar",
             gifName: "mytime"
         ),
         OnboardingPage(
-            title: "Aggiungi nuovi task",
-            description: "Tocca il pulsante '+' in alto a destra per aggiungere nuovi task.",
+            title: "Add new task",
+            description: "Tap the '+' button at the top right to add new tasks.",
             imageName: "plus.circle.fill",
             gifName: "addTaskGif"
         ),
 
         OnboardingPage(
-            title: "Monitora i tuoi progressi",
-            description: "Tocca l'icona in alto a destra nella MyTimeView per monitorare i progressi mensili e settimanali.",
+            title: "Track your progress",
+            description: "Tap the icon at the top right in the MyTimeView to track your monthly and weekly progress.",
             imageName: "person.circle.fill",
             gifName: "progressGif"
         ),
 
         OnboardingPage(
-            title: "Gestisci interessi",
-            description: "Visualizza, aggiungi o rimuovi interessi registrati",
+            title: "Manage interests",
+            description: "View, add, or remove saved interests",
             imageName: "list.bullet.circle.fill",
             gifName: "interestGif"
         )
@@ -78,7 +78,7 @@ struct OnboardingView: View {
                         hasSeenOnboarding = true
                     }) {
                         HStack(spacing: 4) {
-                            Text("Salta")
+                            Text("Skip")
                             Image(systemName: "chevron.right")
                         }
                         .foregroundColor(.appBeige)
@@ -104,7 +104,7 @@ struct OnboardingView: View {
 
                 HStack {
                     if currentPage > 0 {
-                        Button("Indietro") {
+                        Button("Back") {
                             withAnimation {
                                 currentPage -= 1
                             }
@@ -121,7 +121,7 @@ struct OnboardingView: View {
                             hasSeenOnboarding = true
                         }
                     }) {
-                        Text(currentPage < onboardingPages.count - 1 ? "Avanti" : "Inizia")
+                        Text(currentPage < onboardingPages.count - 1 ? "Next" : "Start")
                             .font(.headline)
                             .foregroundColor(.appBlack)
                             .padding(.horizontal, 36)
