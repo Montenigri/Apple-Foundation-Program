@@ -146,7 +146,7 @@ struct MyTimeView: View {
                         endPoint: .trailing
                     )
                 )
-                .frame(height: 2)
+                .frame(height: 2) 
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Spacer()
@@ -159,13 +159,14 @@ struct MyTimeView: View {
         // Gestione intelligente dell'altezza basata sul numero di task
         let taskCount = tasks.count
         let baseHeight: CGFloat = 80
-        let maxVisibleTasks = 6
+        let maxVisibleTasks = 30
         let maxHeight: CGFloat = CGFloat(maxVisibleTasks) * baseHeight
         
         // Se ci sono pochi task, usa l'altezza esatta
         // Se ci sono molti task, limita l'altezza e abilita lo scroll
         let shouldScroll = taskCount > maxVisibleTasks
-        let listHeight = shouldScroll ? maxHeight : CGFloat(taskCount) * baseHeight
+        // Altezza minima: se ci sono task, almeno baseHeight, altrimenti 0
+        let listHeight = taskCount > 0 ? max(shouldScroll ? maxHeight : CGFloat(taskCount) * baseHeight, baseHeight) : 0
         
         return List {
             ForEach(tasks.sorted(by: { $0.startTime < $1.startTime })) { task in

@@ -12,52 +12,32 @@ class TaskManager: ObservableObject {
         requestNotificationPermission()
     }
     
-    /// Genera suggerimenti solo per oggi, domani e dopodomani, solo fuori da sonno e lavoro, solo se non ci sono task/suggerimenti.
+    /// Genera suggerimenti per oggi, domani e dopodomani, solo se in quel giorno non ci sono task utente
     func recalculateSuggestionsForNextThreeDays() {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         let days: [Date] = (0...2).map { calendar.date(byAdding: .day, value: $0, to: today)! }
-        
         // Rimuovi tutti i suggerimenti esistenti nei 3 giorni
         tasks.removeAll { task in
             task.isSuggested && days.contains(where: { calendar.isDate($0, inSameDayAs: task.startTime) })
         }
-        
         for day in days {
             let dayTasks = tasks.filter { calendar.isDate($0.startTime, inSameDayAs: day) && !$0.isSuggested }
-            let daySuggestions = tasks.filter { calendar.isDate($0.startTime, inSameDayAs: day) && $0.isSuggested }
-            if !dayTasks.isEmpty { continue } // Se ci sono task, non suggerire
-            if !daySuggestions.isEmpty { continue } // Se ci sono già suggerimenti, non suggerire
-
-            // Calcola slot disponibili fuori da sonno e lavoro
-            let sleepStart = profile.sleepStart
-            let sleepEnd = profile.sleepEnd
-            let workStart = profile.workStart
-            let workEnd = profile.workEnd
-
-            // Costruisci finestre di tempo disponibili
-            let dayStart = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: day)!
-            let dayEnd = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: day)!
-
-            // Slot: [dalle 00:00 a sleepEnd], [sleepEnd a workStart], [workEnd a sleepStart], [sleepStart a 23:59]
+            if !dayTasks.isEmpty { continue } // Se ci sono task utente, non suggerire
+            // Calcola slot disponibili tra fine sonno e inizio sonno, escludendo lavoro
+            let sleepStart = calendar.date(bySettingHour: calendar.component(.hour, from: profile.sleepStart), minute: calendar.component(.minute, from: profile.sleepStart), second: 0, of: day)!
+            let sleepEnd = calendar.date(bySettingHour: calendar.component(.hour, from: profile.sleepEnd), minute: calendar.component(.minute, from: profile.sleepEnd), second: 0, of: day)!
+            let workStart = calendar.date(bySettingHour: calendar.component(.hour, from: profile.workStart), minute: calendar.component(.minute, from: profile.workStart), second: 0, of: day)!
+            let workEnd = calendar.date(bySettingHour: calendar.component(.hour, from: profile.workEnd), minute: calendar.component(.minute, from: profile.workEnd), second: 0, of: day)!
+            // Slot mattina: sleepEnd -> workStart
             var slots: [(start: Date, end: Date)] = []
-            // 1. Prima del sonno
-            if sleepEnd > dayStart {
-                slots.append((dayStart, sleepEnd))
-            }
-            // 2. Dopo il sonno, prima del lavoro
             if workStart > sleepEnd {
                 slots.append((sleepEnd, workStart))
             }
-            // 3. Dopo il lavoro, prima del sonno
+            // Slot pomeriggio: workEnd -> sleepStart
             if sleepStart > workEnd {
                 slots.append((workEnd, sleepStart))
             }
-            // 4. Dopo il sonno serale
-            if dayEnd > sleepStart {
-                slots.append((sleepStart, dayEnd))
-            }
-
             // Per ogni slot, suggerisci interessi in base a preferenza e timeSlot
             var suggestions: [Task] = []
             for slot in slots {
@@ -67,7 +47,6 @@ class TaskManager: ObservableObject {
                 var remainingTime = availableTime
                 let interestsByPreference = interests
                     .filter { interest in
-                        // timeSlot: "morning", "afternoon", "evening", "any"
                         let hour = calendar.component(.hour, from: currentTime)
                         switch interest.timeSlot.lowercased() {
                         case "morning":
