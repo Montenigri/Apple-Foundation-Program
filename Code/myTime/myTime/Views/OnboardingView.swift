@@ -151,66 +151,76 @@ struct OnboardingPageView: View {
     let page: OnboardingPage
 
     var body: some View {
-        VStack {
-            Spacer(minLength: 40)
+        ScrollView {
+            VStack(spacing: 20) {
+                // Spazio iniziale ridotto
+                Spacer()
+                    .frame(height: 20)
+                
+                // Titolo e descrizione in alto
+                VStack(spacing: 15) {
+                    Text(page.title)
+                        .font(.largeTitle) // Font più grande per maggiore impatto
+                        .fontWeight(.bold)
+                        .foregroundColor(.appBeige)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 25)
 
-            Group {
-                if let gifName = page.gifName {
-                    GifImageView(gifName: gifName)
-                        .frame(height: 250)
-                        .cornerRadius(20)
-                        .padding(.horizontal, 30)
-                } else {
-                    // Controlla se è un SF Symbol o un'immagine custom
-                    if page.imageName.contains(".") {
-                        // SF Symbol (contiene un punto come "clock.fill")
-                        Image(systemName: page.imageName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 100, height: 100)
-                            .foregroundColor(.appLightBlue)
-                            .padding(.bottom, 10)
+                    Text(page.description)
+                        .font(.title2) // Font grande e leggibile
+                        .fontWeight(.medium)
+                        .foregroundColor(.appBeige)
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(6)
+                        .padding(.horizontal, 20)
+                }
+                
+                // Contenuto multimediale (GIF o immagine)
+                Group {
+                    if let gifName = page.gifName {
+                        GifImageView(gifName: gifName)
+                            .frame(height: 280) // Altezza ridotta per lasciare spazio ai testi
+                            .cornerRadius(20)
+                            .padding(.horizontal, 25)
                     } else {
-                        // Immagine da Assets (senza punto come "logo")
-                        Image(page.imageName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 100, height: 100)
-                            .padding(.bottom, 10)
-                    }
-                }
-            }
-
-            Text(page.title)
-                .font(.title)
-                .fontWeight(.bold)
-                .foregroundColor(.appBeige)
-                .multilineTextAlignment(.center)
-                .padding(.top, 20)
-                .padding(.horizontal, 30)
-
-            Text(page.description)
-                .font(.body)
-                .foregroundColor(.appBeige.opacity(0.85))
-                .multilineTextAlignment(.center)
-                .padding(.top, 10)
-                .padding(.horizontal, 30)
-
-            if let features = page.features {
-                VStack(alignment: .leading, spacing: 8) {
-                    ForEach(features, id: \.self) { feature in
-                        Text("• \(feature)")
-                            .font(.subheadline)
-                            .foregroundColor(.appLightBlue)
+                        // Controlla se è un SF Symbol o un'immagine custom
+                        if page.imageName.contains(".") {
+                            // SF Symbol (contiene un punto come "clock.fill")
+                            Image(systemName: page.imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 120, height: 120)
+                                .foregroundColor(.appLightBlue)
+                        } else {
+                            // Immagine da Assets
+                            Image(page.imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 120, height: 120)
+                        }
                     }
                 }
                 .padding(.top, 10)
-                .padding(.horizontal, 30)
-            }
 
-            Spacer()
+                // Features se presenti
+                if let features = page.features {
+                    VStack(alignment: .leading, spacing: 12) {
+                        ForEach(features, id: \.self) { feature in
+                            Text("• \(feature)")
+                                .font(.body)
+                                .foregroundColor(.appLightBlue)
+                        }
+                    }
+                    .padding(.horizontal, 30)
+                    .padding(.top, 10)
+                }
+                
+                // Spazio finale per evitare sovrapposizioni con i bottoni
+                Spacer()
+                    .frame(height: 60)
+            }
         }
-        .padding(.vertical, 30)
+        .scrollIndicators(.hidden) // Nasconde gli indicatori di scroll per un look più pulito
     }
 }
 
