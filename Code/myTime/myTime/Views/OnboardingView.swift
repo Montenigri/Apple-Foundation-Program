@@ -8,9 +8,6 @@
 import SwiftUI
 import WebKit
 
-
-
-
 // 1. Struct usata nei dati della View
 struct OnboardingPage {
     let title: String
@@ -30,11 +27,6 @@ struct OnboardingPage {
     }
 }
 
-
-
-
-
-
 struct OnboardingView: View {
     @Binding var hasSeenOnboarding: Bool
     @State private var currentPage = 0
@@ -42,58 +34,36 @@ struct OnboardingView: View {
     let onboardingPages = [
         OnboardingPage(
             title: "Benvenuto in MyTime",
-            description: "Recupera il controllo del tuo tempo e ottimizza gli slot liberi della giornata in base ai tuoi interessi.",
-            imageName: "clock.fill",
+            description: "Recupera il controllo del tuo tempo e ottimizza i momenti liberi della giornata in base ai tuoi interessi.",
+            imageName: "logoCless", // Ora userà l'immagine da Assets
             gifName: nil,
             isWelcome: true
         ),
         OnboardingPage(
-            title: "La tua programmazione",
-            description: "Nella schermata MyTime vedrai tutti i tuoi task programmati. Swipe da destra a sinistra per completare, da sinistra a destra per eliminare.",
+            title: "Organizza il tuo tempo",
+            description: "Nella schermata MyTime troverai i task configurati e quelli suggeriti.",
             imageName: "calendar",
-            gifName: "prova"
+            gifName: "mytime"
         ),
         OnboardingPage(
             title: "Aggiungi nuovi task",
-            description: "Tocca il pulsante '+' in alto a destra nella MyTimeView per aggiungere nuovi task alla tua programmazione.",
+            description: "Tocca il pulsante '+' in alto a destra per aggiungere nuovi task.",
             imageName: "plus.circle.fill",
-            gifName: "add_task_demo"
+            gifName: "addTaskGif"
         ),
+
         OnboardingPage(
-            title: "Configura i dettagli",
-            description: "Nell'AddTaskView potrai configurare tutti i dettagli del tuo nuovo task: nome, descrizione, durata e luogo.",
-            imageName: "square.and.pencil",
-            gifName: "task_details_demo"
-        ),
-        OnboardingPage(
-            title: "I tuoi progressi",
-            description: "Tocca l'icona profilo in alto a destra nella MyTimeView per monitorare i tuoi progressi e gestire le impostazioni.",
+            title: "Monitora i tuoi progressi",
+            description: "Tocca l'icona in alto a destra nella MyTimeView per monitorare i progressi mensili e settimanali.",
             imageName: "person.circle.fill",
-            gifName: "profile_demo"
+            gifName: "progressGif"
         ),
-        OnboardingPage(
-            title: "Dettagli del task",
-            description: "Tocca qualsiasi task nella programmazione per visualizzarne i dettagli completi e gestirne lo stato.",
-            imageName: "info.circle.fill",
-            gifName: "task_detail_view_demo"
-        ),
-        OnboardingPage(
-            title: "I tuoi interessi",
-            description: "Nel ProfileView potrai aggiungere i tuoi interessi. L'app li userà per suggerirti attività durante i momenti liberi della giornata.",
-            imageName: "heart.fill",
-            gifName: "interests_demo"
-        ),
+
         OnboardingPage(
             title: "Gestisci interessi",
-            description: "Nella InterestsView vedrai tutti i tuoi interessi salvati. Potrai aggiungerli, modificarli o rimuoverli facilmente.",
+            description: "Visualizza, aggiungi o rimuovi interessi registrati",
             imageName: "list.bullet.circle.fill",
-            gifName: "interests_list_demo"
-        ),
-        OnboardingPage(
-            title: "Configura interesse",
-            description: "Quando aggiungi un nuovo interesse, potrai configurarne nome, durata, grado di preferenza e fascia oraria preferita.",
-            imageName: "gearshape.fill",
-            gifName: "add_interest_demo"
+            gifName: "interestGif"
         )
     ]
 
@@ -144,7 +114,6 @@ struct OnboardingView: View {
 
                     Spacer()
 
-                    
                     Button(action: {
                         if currentPage < onboardingPages.count - 1 {
                             currentPage += 1
@@ -178,8 +147,6 @@ struct OnboardingView: View {
     }
 }
 
-
-
 struct OnboardingPageView: View {
     let page: OnboardingPage
 
@@ -194,12 +161,23 @@ struct OnboardingPageView: View {
                         .cornerRadius(20)
                         .padding(.horizontal, 30)
                 } else {
-                    Image(systemName: page.imageName)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 100, height: 100)
-                        .foregroundColor(.appLightBlue)
-                        .padding(.bottom, 10)
+                    // Controlla se è un SF Symbol o un'immagine custom
+                    if page.imageName.contains(".") {
+                        // SF Symbol (contiene un punto come "clock.fill")
+                        Image(systemName: page.imageName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 100)
+                            .foregroundColor(.appLightBlue)
+                            .padding(.bottom, 10)
+                    } else {
+                        // Immagine da Assets (senza punto come "logo")
+                        Image(page.imageName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 100)
+                            .padding(.bottom, 10)
+                    }
                 }
             }
 
@@ -236,14 +214,6 @@ struct OnboardingPageView: View {
     }
 }
 
-
-
-
-
-
-
-
-
 struct GifImageView: UIViewRepresentable {
     let gifName: String
 
@@ -252,6 +222,7 @@ struct GifImageView: UIViewRepresentable {
         webView.backgroundColor = .clear
         webView.isOpaque = false
         webView.scrollView.isScrollEnabled = false
+        webView.scrollView.pinchGestureRecognizer?.isEnabled = false
         webView.scrollView.bounces = false
         return webView
     }
@@ -272,6 +243,7 @@ struct GifImageView: UIViewRepresentable {
     private func loadFallbackContent(in webView: WKWebView) {
         let html = """
         <html>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <body style="margin:0; padding:20px; background-color:transparent; display:flex; justify-content:center; align-items:center; height:100vh;">
             <div style="text-align:center; color:#999;">
                 <div style="font-size:48px;">📱</div>
@@ -283,5 +255,3 @@ struct GifImageView: UIViewRepresentable {
         webView.loadHTMLString(html, baseURL: nil)
     }
 }
-
-
