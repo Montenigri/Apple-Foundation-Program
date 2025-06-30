@@ -12,12 +12,12 @@ class TaskManager: ObservableObject {
         requestNotificationPermission()
     }
     
-    /// Genera suggerimenti per oggi, domani e dopodomani, solo se in quel giorno non ci sono task utente
+    /// Generates suggestions for today, tomorrow, and the day after tomorrow, only if there are no user tasks on that day
     func recalculateSuggestionsForNextThreeDays() {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         let days: [Date] = (0...2).map { calendar.date(byAdding: .day, value: $0, to: today)! }
-        // Rimuovi tutti i suggerimenti esistenti nei 3 giorni
+        // Remove all existing suggestions for the 3 days
         tasks.removeAll { task in
             task.isSuggested && days.contains(where: { calendar.isDate($0, inSameDayAs: task.startTime) })
         }
@@ -26,9 +26,9 @@ class TaskManager: ObservableObject {
         }
     }
     
-    /// Quando aggiungi un task, rimuovi eventuali suggerimenti sovrapposti e ricalcola per il giorno
+    /// When adding a task, remove any overlapping suggestions and recalculate for the day
     func addTask(_ task: Task) {
-        // Rimuovi suggerimenti che si sovrappongono allo slot del nuovo task
+        // Remove suggestions that overlap with the new task's time slot
         let calendar = Calendar.current
         tasks.removeAll { t in
             t.isSuggested && calendar.isDate(t.startTime, inSameDayAs: task.startTime) && (
@@ -42,40 +42,40 @@ class TaskManager: ObservableObject {
         saveData()
     }
     
-    /// Ricalcola suggerimenti solo per un giorno specifico
+    /// Recalculate suggestions only for a specific day
     func recalculateSuggestionsForDay(_ date: Date) {
         let calendar = Calendar.current
         let day = calendar.startOfDay(for: date)
         let nextDay = calendar.date(byAdding: .day, value: 1, to: day)!
-        // Rimuovi suggerimenti di quel giorno
+        // Remove suggestions for that day
         tasks.removeAll { $0.isSuggested && $0.startTime >= day && $0.startTime < nextDay }
-        // Trova tutti i task utente del giorno (escludi suggeriti)
+        // Find all user tasks for the day (exclude suggested ones)
         let dayTasks = tasks.filter { calendar.isDate($0.startTime, inSameDayAs: day) && !$0.isSuggested }
-        // Calcola slot disponibili tra fine sonno e inizio sonno, escludendo lavoro e task utente
+        // Calculate available slots between end of sleep and start of sleep, excluding work and user tasks
         let sleepStart = calendar.date(bySettingHour: calendar.component(.hour, from: profile.sleepStart), minute: calendar.component(.minute, from: profile.sleepStart), second: 0, of: day)!
         let sleepEnd = calendar.date(bySettingHour: calendar.component(.hour, from: profile.sleepEnd), minute: calendar.component(.minute, from: profile.sleepEnd), second: 0, of: day)!
         let workStart = calendar.date(bySettingHour: calendar.component(.hour, from: profile.workStart), minute: calendar.component(.minute, from: profile.workStart), second: 0, of: day)!
         let workEnd = calendar.date(bySettingHour: calendar.component(.hour, from: profile.workEnd), minute: calendar.component(.minute, from: profile.workEnd), second: 0, of: day)!
-        // Costruisci blocchi occupati: sonno, lavoro, task utente
+        // Build occupied blocks: sleep, work, user tasks
         var busyBlocks: [(start: Date, end: Date)] = []
-        // Sonno: da sleepStart a sleepEnd (gestione overnight)
+        // Sleep: from sleepStart to sleepEnd (handle overnight cases)
         if sleepEnd > sleepStart {
             busyBlocks.append((sleepStart, sleepEnd))
         } else {
-            // Sonno attraversa la mezzanotte
+            // Sleep crosses midnight
             busyBlocks.append((sleepStart, calendar.date(byAdding: .day, value: 1, to: sleepEnd)!))
         }
-        // Lavoro
+        // Work
         if workEnd > workStart {
             busyBlocks.append((workStart, workEnd))
         }
-        // Task utente
+        // Suer Task
         for t in dayTasks {
             busyBlocks.append((t.startTime, t.endTime))
         }
-        // Ordina i blocchi occupati
+        // Sort the occupied blocks
         busyBlocks.sort { $0.start < $1.start }
-        // Trova slot liberi tra i blocchi occupati
+        // Find free slots between the occupied blocks
         var freeSlots: [(start: Date, end: Date)] = []
         var cursor = day
         for block in busyBlocks {
@@ -84,11 +84,11 @@ class TaskManager: ObservableObject {
             }
             cursor = max(cursor, block.end)
         }
-        // Ultimo slot fino a fine giornata
+        // Last slot until the end of the day
         if nextDay > cursor, nextDay.timeIntervalSince(cursor) >= 900 {
             freeSlots.append((cursor, nextDay))
         }
-        // Per ogni slot libero, suggerisci interessi in base a preferenza e timeSlot
+        // For each free slot, suggest interests based on preference and timeSlot
         var suggestions: [Task] = []
         for slot in freeSlots {
             let availableTime = slot.end.timeIntervalSince(slot.start)
@@ -166,7 +166,7 @@ class TaskManager: ObservableObject {
         let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: today))!
         let weekEnd = calendar.date(byAdding: .day, value: 7, to: weekStart)!
 
-        // Definisci il range in base al tipo richiesto
+        // Define the range based on the requested type
         let suggestionRange: (start: Date, end: Date)
         switch rangeType {
         case .today:
@@ -183,18 +183,18 @@ class TaskManager: ObservableObject {
 
         var timeSlots: [(start: Date, end: Date)] = []
 
-        // 1. Prima del primo task
+        // 1. Before the first task
         if let first = sortedTasks.first, first.startTime > suggestionRange.start {
             timeSlots.append((suggestionRange.start, first.startTime))
         }
 
-        // 2. Tra i task esistenti
+        // 2. Between existing tasks
         if sortedTasks.count > 1 {
             for i in 0..<sortedTasks.count - 1 {
                 let currentEnd = sortedTasks[i].endTime
                 let nextStart = sortedTasks[i + 1].startTime
                 if nextStart.timeIntervalSince(currentEnd) > 900 {
-                    // Solo se lo slot è nel range
+                    // Only if the slot is within the range
                     if currentEnd >= suggestionRange.start && nextStart <= suggestionRange.end {
                         timeSlots.append((currentEnd, nextStart))
                     }
@@ -202,7 +202,7 @@ class TaskManager: ObservableObject {
             }
         }
 
-        // 3. Dopo l’ultimo task
+        // 3. After the last task
         if let last = sortedTasks.last, last.endTime < suggestionRange.end {
             timeSlots.append((last.endTime, suggestionRange.end))
         } else if sortedTasks.isEmpty {
@@ -218,7 +218,7 @@ class TaskManager: ObservableObject {
             var currentTime = slot.start
             var remainingTime = availableTime
 
-            // Filtra interessi per timeSlot e preferenza
+            // Filter interests by timeSlot and preference
             let interestsByPreference = interests
                 .filter { interest in
                     // timeSlot: "morning", "afternoon", "evening", "any"
@@ -371,7 +371,7 @@ class TaskManager: ObservableObject {
         return tasks.filter { calendar.isDate($0.startTime, inSameDayAs: date) }
     }
     
-    /// Rimuove un task e aggiorna i suggerimenti per il giorno
+    /// Removes a task and updates suggestions for the day
     func removeTask(_ task: Task) {
         let calendar = Calendar.current
         tasks.removeAll { $0.id == task.id }

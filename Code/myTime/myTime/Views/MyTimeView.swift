@@ -183,7 +183,7 @@ struct MyTimeView: View {
                             taskManager.removeTask(task)
                         }
                     } label: {
-                        Label("Elimina", systemImage: "trash")
+                        Label("Delete", systemImage: "trash")
                     }
                 }
                 .swipeActions(edge: .leading, allowsFullSwipe: false) {
@@ -193,9 +193,9 @@ struct MyTimeView: View {
                         }
                     } label: {
                         if task.isCompleted {
-                            Label("Da completare", systemImage: "arrow.uturn.left")
+                            Label("To do", systemImage: "arrow.uturn.left")
                         } else {
-                            Label("Completato", systemImage: "checkmark")
+                            Label("Done", systemImage: "checkmark")
                         }
                     }
                     .tint(task.isCompleted ? .orange : .green)
@@ -209,7 +209,7 @@ struct MyTimeView: View {
     }
     
     private func emptyDayView() -> some View {
-        Text("Nessun impegno")
+        Text("No tasks")
             .font(.caption)
             .foregroundColor(.appBeige.opacity(0.4))
             .padding(.horizontal)

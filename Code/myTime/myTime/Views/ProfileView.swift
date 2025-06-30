@@ -173,7 +173,7 @@ struct ProfileView: View {
     
     private var viewModeToggle: some View {
         HStack {
-            Text(isWeeklyView ? "Visualizzazione Settimanale" : "Visualizzazione Mensile")
+            Text(isWeeklyView ? "Weekly view" : "Monthly view")
                 .font(.caption)
                 .foregroundColor(.appBeige.opacity(0.8))
             
@@ -187,7 +187,7 @@ struct ProfileView: View {
                 HStack(spacing: 4) {
                     Image(systemName: isWeeklyView ? "calendar.badge.clock" : "calendar")
                         .font(.caption)
-                    Text(isWeeklyView ? "Mensile" : "Settimanale")
+                    Text(isWeeklyView ? "Weekly" : "Monthly")
                         .font(.caption)
                 }
                 .foregroundColor(.appBeige)
@@ -211,7 +211,7 @@ struct ProfileView: View {
     
     private var progressStats: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text("Target \(isWeeklyView ? "Settimanale" : "Mensile")")
+            Text("Target \(isWeeklyView ? "Weekly" : "Monthly")")
                 .font(.subheadline)
                 .foregroundColor(.appBeige.opacity(0.7))
             
@@ -247,7 +247,7 @@ struct ProfileView: View {
     }
     
     private var updateButton: some View {
-        Button("Aggiorna") {
+        Button("Update") {
             // Forza l'aggiornamento del grafico
             withAnimation(.easeInOut(duration: 0.5)) {
                 chartRefreshTrigger = UUID()
@@ -265,21 +265,21 @@ struct ProfileView: View {
     
     private var dailyProgressSection: some View {
         VStack(spacing: 15) {
-            Text("Progressi di oggi")
+            Text("Today's progress")
                 .font(.headline)
                 .foregroundColor(.appBeige)
             
             HStack {
                 dailyProgressStat(
                     value: "\(todayCompletedTasks)",
-                    label: "Task completati oggi"
+                    label: "Task done today"
                 )
                 
                 Spacer()
                 
                 dailyProgressStat(
                     value: String(format: "%.1f", todayTotalHours),
-                    label: "Ore impiegate oggi"
+                    label: "Hours regained today"
                 )
             }
             .padding()
@@ -304,7 +304,7 @@ struct ProfileView: View {
     
     private var sleepSection: some View {
         timeSection(
-            title: "Sezione Sonno",
+            title: "Sleep time slot",
             startTime: $taskManager.profile.sleepStart,
             endTime: $taskManager.profile.sleepEnd
         )
@@ -312,7 +312,7 @@ struct ProfileView: View {
     
     private var workSection: some View {
         timeSection(
-            title: "Sezione Lavoro",
+            title: "Work time slot",
             startTime: $taskManager.profile.workStart,
             endTime: $taskManager.profile.workEnd
         )
@@ -325,9 +325,9 @@ struct ProfileView: View {
                 .foregroundColor(.appBeige)
             
             HStack {
-                timePicker(label: "Inizio", selection: startTime)
+                timePicker(label: "Start", selection: startTime)
                 Spacer()
-                timePicker(label: "Fine", selection: endTime)
+                timePicker(label: "End", selection: endTime)
             }
         }
         .padding()
@@ -352,7 +352,7 @@ struct ProfileView: View {
         Button(action: {
             showingInterests = true
         }) {
-            Text("Seleziona Interessi")
+            Text("Select Interest")
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(RoundedRectangle(cornerRadius: 12).fill(Color.appDarkBlue))

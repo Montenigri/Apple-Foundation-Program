@@ -7,9 +7,9 @@ struct AddInterestView: View {
     @State private var name: String = ""
     @State private var durationMinutes: Int = 30
     @State private var preferenceLevel: Int = 3
-    @State private var selectedTimeSlot: String = "Mattina"  // valore di default
+    @State private var selectedTimeSlot: String = "Morning"  // valore di default
 
-    let timeSlots = ["Mattina", "Pomeriggio", "Sera"]
+    let timeSlots = ["Morning", "Afternoon", "Evening"]
 
     var body: some View {
         ZStack {
@@ -17,16 +17,16 @@ struct AddInterestView: View {
             
             ScrollView {
                 VStack(spacing: 20) {
-                    // Header con pulsante chiudi
+                    // Header with close button
                     headerSection
                     
-                    // Titolo
+                    // Title
                     titleSection
                     
                     // Form content
                     formContent
                     
-                    // Pulsante salva interesse con stesso stile e posizionamento di ProfileView
+                    // Save interest button with the same style and positioning as ProfileView
                     Spacer(minLength: 20)
                     saveButton
                 }
@@ -65,7 +65,7 @@ struct AddInterestView: View {
     
     private var titleSection: some View {
         VStack(spacing: 15) {
-            Text("Nuovo Interesse")
+            Text("New Interest")
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundColor(.appBeige)
@@ -74,27 +74,27 @@ struct AddInterestView: View {
     
     private var formContent: some View {
         VStack(spacing: 20) {
-            // Nome interesse
+            // Interest name
             nameSection
             
-            // Durata
+            // Duration
             durationSection
             
-            // Grado di preferenza
+            // Preference level
             preferenceSection
             
-            // Fascia oraria
+            // Time slot
             timeSlotSection
         }
     }
     
     private var nameSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Nome interesse")
+            Text("Interest name")
                 .font(.headline)
                 .foregroundColor(.appBeige)
             
-            TextField("Es. Lettura, Meditazione", text: $name)
+            TextField("Ex. Reading, Running", text: $name)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
                 .background(
@@ -113,7 +113,7 @@ struct AddInterestView: View {
     
     private var durationSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Durata (minuti)")
+            Text("Duration (minutes)")
                 .font(.headline)
                 .foregroundColor(.appBeige)
             
@@ -135,7 +135,7 @@ struct AddInterestView: View {
                 
                 Spacer()
                 
-                Text("\(durationMinutes) minuti")
+                Text("\(durationMinutes) Minutes")
                     .font(.title3)
                     .fontWeight(.medium)
                     .foregroundColor(.appBeige)
@@ -168,7 +168,7 @@ struct AddInterestView: View {
     
     private var preferenceSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Grado di preferenza")
+            Text("Preference level")
                 .font(.headline)
                 .foregroundColor(.appBeige)
             
@@ -213,7 +213,7 @@ struct AddInterestView: View {
     
     private var timeSlotSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Fascia oraria")
+            Text("Time slot")
                 .font(.headline)
                 .foregroundColor(.appBeige)
             
@@ -267,7 +267,7 @@ struct AddInterestView: View {
             taskManager.addInterest(interest)
             dismiss()
         }) {
-            Text("Salva interesse")
+            Text("Save")
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(RoundedRectangle(cornerRadius: 12).fill(Color.appDarkBlue))

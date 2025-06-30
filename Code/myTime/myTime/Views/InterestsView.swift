@@ -27,7 +27,7 @@ struct InterestsView: View {
                     
                     // Titolo centrato
                     VStack(spacing: 15) {
-                        Text("Seleziona Interessi")
+                        Text("Select Interest")
                             .font(.title)
                             .fontWeight(.bold)
                             .foregroundColor(.appBeige)
@@ -35,7 +35,7 @@ struct InterestsView: View {
 
                     if taskManager.interests.isEmpty {
                         Spacer()
-                        Text("Clicca sul pulsante per aggiungere un task da suggerire")
+                        Text("Click the button to add a task to suggest")
                             .foregroundColor(.appBeige)
                             .padding()
                         Spacer()
@@ -48,7 +48,7 @@ struct InterestsView: View {
                                         .font(.title2)
                                         .fontWeight(.medium)
                                         .foregroundColor(.appBeige)
-                                    Text("Durata: \(Int(interest.duration / 60)) min | Preferenza: \(interest.preferenceLevel) | Fascia: \(interest.timeSlot)")
+                                    Text("Duration: \(Int(interest.duration / 60)) min | Preference Level: \(interest.preferenceLevel) | Time Slot: \(interest.timeSlot)")
                                         .font(.subheadline)
                                         .foregroundColor(.appLightBlue)
                                 }
@@ -66,7 +66,7 @@ struct InterestsView: View {
                                     Button(role: .destructive) {
                                         taskManager.removeInterest(interest)
                                     } label: {
-                                        Label("Rimuovi", systemImage: "trash")
+                                        Label("Remove", systemImage: "trash")
                                     }
                                 }
                             }
@@ -80,7 +80,7 @@ struct InterestsView: View {
                     Button(action: {
                         showingAddInterest = true
                     }) {
-                        Text("Aggiungi interessi")
+                        Text("Add interest")
                             .frame(maxWidth: .infinity)
                             .padding()
                             .background(RoundedRectangle(cornerRadius: 12).fill(Color.appDarkBlue))

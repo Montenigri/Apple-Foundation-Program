@@ -29,7 +29,7 @@ struct TaskDetailView: View {
                     
                     // Titolo centrato
                     VStack(spacing: 15) {
-                        Text("Dettagli Task")
+                        Text("Task details")
                             .font(.title)
                             .fontWeight(.bold)
                             .foregroundColor(.appBeige)

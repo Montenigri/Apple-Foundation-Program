@@ -30,33 +30,33 @@ struct AddTaskView: View {
                 ScrollView {
                     VStack(spacing: 20) {
                         VStack(alignment: .leading, spacing: 15) {
-                            Text("Nuovo Task")
+                            Text("New Task")
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(.appBeige)
 
                             // Name field
                             VStack(alignment: .leading, spacing: 5) {
-                                Text("Nome attività")
+                                Text("Task name")
                                     .font(.subheadline)
                                     .foregroundColor(.appBeige)
-                                TextField("Inserisci nome", text: $name)
+                                TextField("Insert Name", text: $name)
                                     .textFieldStyle(CustomTextFieldStyle())
                             }
 
                             // Description field
                             VStack(alignment: .leading, spacing: 5) {
-                                Text("Descrizione")
+                                Text("Description")
                                     .font(.subheadline)
                                     .foregroundColor(.appBeige)
-                                TextField("Inserisci descrizione", text: $description, axis: .vertical)
+                                TextField("Insert description", text: $description, axis: .vertical)
                                     .textFieldStyle(CustomTextFieldStyle())
                                     .lineLimit(3...6)
                             }
 
                             // Start time
                             VStack(alignment: .leading, spacing: 5) {
-                                Text("Orario di inizio")
+                                Text("Start time")
                                     .font(.subheadline)
                                     .foregroundColor(.appBeige)
                                 DatePicker("", selection: $startTime, displayedComponents: [.date, .hourAndMinute])
@@ -70,15 +70,15 @@ struct AddTaskView: View {
 
                             // Location field
                             VStack(alignment: .leading, spacing: 5) {
-                                Text("Luogo")
+                                Text("Place")
                                     .font(.subheadline)
                                     .foregroundColor(.appBeige)
-                                TextField("Inserisci luogo", text: $location)
+                                TextField("Add place", text: $location)
                                     .textFieldStyle(CustomTextFieldStyle())
                             }
 
                             // Add button
-                            Button("Aggiungi Task") {
+                            Button("Add Task") {
                                 addTask()
                             }
                             .frame(maxWidth: .infinity)
@@ -96,7 +96,7 @@ struct AddTaskView: View {
                 }
             }
         }
-        .alert("Attenzione", isPresented: $showingAlert) {
+        .alert("Warning", isPresented: $showingAlert) {
             Button("OK", role: .cancel) { }
         } message: {
             Text(alertMessage)
@@ -122,7 +122,7 @@ struct AddTaskView: View {
         }
 
         if hasConflict {
-            alertMessage = "Esiste già un task in questo slot temporale"
+            alertMessage = "There is already a task in this time slot."
             showingAlert = true
         } else {
             // Rimuovi eventuali task suggeriti sovrapposti
@@ -139,7 +139,7 @@ struct AddTaskView: View {
             location = ""
             startTime = Date()
 
-            alertMessage = "Task aggiunto con successo!"
+            alertMessage = "Task added successfully!"
             showingAlert = true
         }
     }
@@ -164,7 +164,7 @@ struct AddTaskView: View {
         
         var body: some View {
             VStack(alignment: .leading, spacing: 5) {
-                Text("Durata")
+                Text("Duration")
                     .font(.subheadline)
                     .foregroundColor(.appBeige)
                 
@@ -173,11 +173,11 @@ struct AddTaskView: View {
                     
                     // Hours Picker
                     VStack(spacing: 8) {
-                        Text("Ore")
+                        Text("Hours")
                             .font(.subheadline)
                             .foregroundColor(.appBeige)
                         
-                        Picker("Ore", selection: $selectedHours) {
+                        Picker("Hours", selection: $selectedHours) {
                             ForEach(0...23, id: \.self) { hour in
                                 Text("\(hour)")
                                     .foregroundColor(.appBeige)
@@ -198,11 +198,11 @@ struct AddTaskView: View {
                     
                     // Minutes Picker
                     VStack(spacing: 8) {
-                        Text("Minuti")
+                        Text("Minutes")
                             .font(.subheadline)
                             .foregroundColor(.appBeige)
                         
-                        Picker("Minuti", selection: $selectedMinutes) {
+                        Picker("Minutes", selection: $selectedMinutes) {
                             ForEach(Array(stride(from: 0, through: 55, by: 5)), id: \.self) { minute in
                                 Text(String(format: "%02d", minute))
                                     .foregroundColor(.appBeige)
