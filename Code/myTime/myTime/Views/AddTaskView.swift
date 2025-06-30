@@ -104,7 +104,6 @@ struct AddTaskView: View {
     }
 
     private func addTask() {
-        let calendar = Calendar.current
         let durationInSeconds = TimeInterval(duration * 60)
 
         let newTask = Task(

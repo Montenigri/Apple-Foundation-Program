@@ -36,6 +36,9 @@ struct MyTimeView: View {
                     }
                 }
             }
+            .onAppear {
+                taskManager.recalculateSuggestionsForNextThreeDays()
+            }
             .sheet(item: $selectedTask) { task in
                 TaskDetailView(task: task) {
                     selectedTask = nil
@@ -294,8 +297,4 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
     static func reduce(value: inout [ScrollOffsetData], nextValue: () -> [ScrollOffsetData]) {
         value.append(contentsOf: nextValue())
     }
-}
-
-#Preview {
-    MyTimeView().environmentObject(TaskManager())
 }

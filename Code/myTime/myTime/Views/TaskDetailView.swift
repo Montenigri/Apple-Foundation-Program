@@ -84,7 +84,7 @@ struct TaskDetailView: View {
         }
         .alert("Conferma rimozione", isPresented: $showingDeleteAlert) {
             Button("Annulla", role: .cancel) { }
-            Button("Rimuovi", role: .destructive) {
+            Button("Rimuovi", role: .destructive) { [taskManager] in
                 taskManager.removeTask(task)
                 onDelete()
                 dismiss()
