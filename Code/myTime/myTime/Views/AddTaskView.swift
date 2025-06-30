@@ -64,16 +64,9 @@ struct AddTaskView: View {
                                     .colorScheme(.dark)
                             }
 
+
                             // Duration
-                            Section(header: Text("Durata (minuti)").foregroundColor(.appBeige)) {
-                                Stepper("\(duration) minuti", value: $duration, in: 5...180, step: 5)
-                                    .padding()
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .fill(Color.appBeige)
-                                    )
-                                    .foregroundColor(.appBlack)
-                            }
+                            DurationPickerView(totalMinutes: $duration)
 
                             // Location field
                             VStack(alignment: .leading, spacing: 5) {
@@ -151,4 +144,98 @@ struct AddTaskView: View {
             showingAlert = true
         }
     }
+    
+    
+    
+    
+    // MARK: - Duration Picker Component
+    struct DurationPickerView: View {
+        @Binding var totalMinutes: Int
+        
+        @State private var selectedHours: Int
+        @State private var selectedMinutes: Int
+        
+        init(totalMinutes: Binding<Int>) {
+            self._totalMinutes = totalMinutes
+            let hours = totalMinutes.wrappedValue / 60
+            let minutes = totalMinutes.wrappedValue % 60
+            self._selectedHours = State(initialValue: hours)
+            self._selectedMinutes = State(initialValue: minutes)
+        }
+        
+        var body: some View {
+            VStack(alignment: .leading, spacing: 5) {
+                Text("Durata")
+                    .font(.subheadline)
+                    .foregroundColor(.appBeige)
+                
+                HStack(spacing: 0) {
+                    Spacer()
+                    
+                    // Hours Picker
+                    VStack(spacing: 8) {
+                        Text("Ore")
+                            .font(.subheadline)
+                            .foregroundColor(.appBeige)
+                        
+                        Picker("Ore", selection: $selectedHours) {
+                            ForEach(0...23, id: \.self) { hour in
+                                Text("\(hour)")
+                                    .foregroundColor(.appBeige)
+                                    .font(.system(size: 22, weight: .medium, design: .rounded))
+                                    .tag(hour)
+                            }
+                        }
+                        .pickerStyle(WheelPickerStyle())
+                        .frame(width: 100, height: 150)
+                    }
+                    
+                    Text(":")
+                        .font(.largeTitle)
+                        .fontWeight(.medium)
+                        .foregroundColor(.appBeige)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 30)
+                    
+                    // Minutes Picker
+                    VStack(spacing: 8) {
+                        Text("Minuti")
+                            .font(.subheadline)
+                            .foregroundColor(.appBeige)
+                        
+                        Picker("Minuti", selection: $selectedMinutes) {
+                            ForEach(Array(stride(from: 0, through: 55, by: 5)), id: \.self) { minute in
+                                Text(String(format: "%02d", minute))
+                                    .foregroundColor(.appBeige)
+                                    .font(.system(size: 22, weight: .medium, design: .rounded))
+                                    .tag(minute)
+                            }
+                        }
+                        .pickerStyle(WheelPickerStyle())
+                        .frame(width: 100, height: 150)
+                    }
+                    
+                    Spacer()
+                }
+            }
+            .onChange(of: selectedHours) { _, newHours in
+                updateTotalMinutes()
+            }
+            .onChange(of: selectedMinutes) { _, newMinutes in
+                updateTotalMinutes()
+            }
+        }
+        
+        private func updateTotalMinutes() {
+            let total = selectedHours * 60 + selectedMinutes
+            // Minimum 5 minutes
+            totalMinutes = max(total, total == 0 ? 5 : total)
+            
+            // If total is 0, set to 5 minutes and update selectedMinutes
+            if total == 0 {
+                selectedMinutes = 5
+            }
+        }
+    }
+    
 }

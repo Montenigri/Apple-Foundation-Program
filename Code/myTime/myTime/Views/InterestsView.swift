@@ -57,7 +57,7 @@ struct InterestsView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .background(
                                     RoundedRectangle(cornerRadius: 16)
-                                        .fill(Color.appDarkBlue)
+                                        .fill(Color.appDarkBlue.opacity(0.3))
                                 )
                                 .listRowBackground(Color.clear)
                                 .listRowSeparator(.hidden)
