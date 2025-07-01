@@ -229,11 +229,28 @@ struct GifImageView: UIViewRepresentable {
 
     func makeUIView(context: Context) -> WKWebView {
         let webView = WKWebView()
+        
+        // Configurazione base
         webView.backgroundColor = .clear
         webView.isOpaque = false
+        
+        // Disabilita completamente lo scroll e tutti i gesti
         webView.scrollView.isScrollEnabled = false
         webView.scrollView.pinchGestureRecognizer?.isEnabled = false
+        webView.scrollView.panGestureRecognizer.isEnabled = false
         webView.scrollView.bounces = false
+        webView.scrollView.bouncesZoom = false
+        webView.scrollView.showsHorizontalScrollIndicator = false
+        webView.scrollView.showsVerticalScrollIndicator = false
+        
+        // Imposta zoom level fisso
+        webView.scrollView.minimumZoomScale = 1.0
+        webView.scrollView.maximumZoomScale = 1.0
+        webView.scrollView.zoomScale = 1.0
+        
+        // Disabilita l'interazione utente per il contenuto web
+        webView.isUserInteractionEnabled = false
+        
         return webView
     }
 
@@ -253,11 +270,42 @@ struct GifImageView: UIViewRepresentable {
     private func loadFallbackContent(in webView: WKWebView) {
         let html = """
         <html>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <body style="margin:0; padding:20px; background-color:transparent; display:flex; justify-content:center; align-items:center; height:100vh;">
-            <div style="text-align:center; color:#999;">
-                <div style="font-size:48px;">📱</div>
-                <div style="margin-top:10px; font-size:14px;">Demo non disponibile</div>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+        <head>
+            <style>
+                * {
+                    -webkit-user-select: none;
+                    -webkit-touch-callout: none;
+                    -webkit-tap-highlight-color: transparent;
+                }
+                body {
+                    margin: 0; 
+                    padding: 20px; 
+                    background-color: transparent; 
+                    display: flex; 
+                    justify-content: center; 
+                    align-items: center; 
+                    height: 100vh;
+                    overflow: hidden;
+                }
+                .container {
+                    text-align: center; 
+                    color: #999;
+                    pointer-events: none;
+                }
+                .icon {
+                    font-size: 48px;
+                }
+                .text {
+                    margin-top: 10px; 
+                    font-size: 14px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="icon">📱</div>
+                <div class="text">Demo non disponibile</div>
             </div>
         </body>
         </html>
