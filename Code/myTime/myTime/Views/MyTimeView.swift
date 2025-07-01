@@ -6,6 +6,8 @@ struct MyTimeView: View {
     @State private var showDetail = false
     @State private var currentHeaderMonth = Date()
     @State private var hasScrolledToToday = false
+    @State private var showEasterEgg = false
+    @State private var monthTapCount = 0
 
     let daysRange = -30..<120
 
@@ -45,6 +47,9 @@ struct MyTimeView: View {
                 }
                 .environmentObject(taskManager)
             }
+            .sheet(isPresented: $showEasterEgg) {
+                EasterEggView()
+            }
         }
     }
     
@@ -56,7 +61,13 @@ struct MyTimeView: View {
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(.appBeige)
-
+                .onTapGesture {
+                    monthTapCount += 1
+                    if monthTapCount == 5 {
+                        showEasterEgg = true
+                        monthTapCount = 0
+                    }
+                }
             Rectangle()
                 .fill(Color.appDarkBlue.opacity(0.3))
                 .frame(height: 2)
