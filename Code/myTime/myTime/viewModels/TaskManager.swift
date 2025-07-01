@@ -84,30 +84,34 @@ class TaskManager: ObservableObject {
         }
         // For each free slot, suggest interests based on preference and timeSlot
         var suggestions: [Task] = []
+        var suggestionCount = 0
+        let maxSuggestions = 3
         for slot in freeSlots {
             let availableTime = slot.end.timeIntervalSince(slot.start)
             if availableTime < 900 { continue }
             var currentTime = slot.start
             var remainingTime = availableTime
-            let interestsByPreference = interests
-                .filter { interest in
-                    let hour = calendar.component(.hour, from: currentTime)
-                    switch interest.timeSlot.lowercased() {
-                    case "morning":
-                        return hour >= 6 && hour < 12
-                    case "afternoon":
-                        return hour >= 12 && hour < 18
-                    case "evening":
-                        return hour >= 18 && hour < 23
-                    case "any":
-                        return true
-                    default:
-                        return true
+            // Riempie tutto lo slot con suggerimenti, anche ripetendo interessi se necessario, ma massimo 3 suggerimenti al giorno
+            while remainingTime >= 900 && suggestionCount < maxSuggestions {
+                let interestsByPreference = interests
+                    .filter { interest in
+                        let hour = calendar.component(.hour, from: currentTime)
+                        switch interest.timeSlot.lowercased() {
+                        case "morning":
+                            return hour >= 6 && hour < 12
+                        case "afternoon":
+                            return hour >= 12 && hour < 18
+                        case "evening":
+                            return hour >= 18 && hour < 23
+                        case "any":
+                            return true
+                        default:
+                            return true
+                        }
                     }
-                }
-                .sorted { $0.preferenceLevel > $1.preferenceLevel }
-            for interest in interestsByPreference {
-                if interest.duration <= remainingTime {
+                    .sorted { $0.preferenceLevel > $1.preferenceLevel }
+                // Trova il primo interesse che entra nello slot rimanente
+                if let interest = interestsByPreference.first(where: { $0.duration <= remainingTime }) {
                     let newTask = Task(
                         name: interest.name,
                         description: "Suggerimento basato sui tuoi interessi",
@@ -117,10 +121,15 @@ class TaskManager: ObservableObject {
                         isSuggested: true
                     )
                     suggestions.append(newTask)
+                    suggestionCount += 1
                     currentTime = currentTime.addingTimeInterval(interest.duration)
                     remainingTime -= interest.duration
+                } else {
+                    // Se nessun interesse entra nello slot rimanente, esci dal ciclo
+                    break
                 }
             }
+            if suggestionCount >= maxSuggestions { break }
         }
         tasks.append(contentsOf: suggestions)
         saveData()
