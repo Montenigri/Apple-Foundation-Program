@@ -28,16 +28,10 @@ class TaskManager: ObservableObject {
     
     /// When adding a task, remove any overlapping suggestions and recalculate for the day
     func addTask(_ task: Task) {
-        // Remove suggestions that overlap with the new task's time slot
         let calendar = Calendar.current
-        tasks.removeAll { t in
-            t.isSuggested && calendar.isDate(t.startTime, inSameDayAs: task.startTime) && (
-                (t.startTime < task.endTime && t.endTime > task.startTime)
-            )
-        }
         tasks.append(task)
         scheduleNotifications(for: task)
-        // Ricalcola solo per il giorno
+        // Ricalcola solo per il giorno: rimuove tutti i suggerimenti del giorno e li rigenera negli slot liberi
         recalculateSuggestionsForDay(task.startTime)
         saveData()
     }
