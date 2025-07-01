@@ -141,7 +141,7 @@ struct ProfileView: View {
     
     private var titleSection: some View {
         VStack(spacing: 15) {
-            Text("Progressi")
+            Text("Progress")
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundColor(.appBeige)
