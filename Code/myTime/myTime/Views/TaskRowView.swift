@@ -49,7 +49,7 @@ struct TaskRowView: View {
                             Text(truncated(task.description, limit: descriptionLimit))
                                 .font(.caption)
                                 .foregroundColor(.appDarkBlue.opacity(0.7))
-                                .lineLimit(nil)
+                                .lineLimit(1)
                                 .truncationMode(.tail)
                         }
 
