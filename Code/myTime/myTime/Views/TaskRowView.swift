@@ -49,7 +49,7 @@ struct TaskRowView: View {
                             Text(truncated(task.description, limit: descriptionLimit))
                                 .font(.caption)
                                 .foregroundColor(.appDarkBlue.opacity(0.7))
-                                .lineLimit(1)
+                                .lineLimit(nil)
                                 .truncationMode(.tail)
                         }
 
@@ -58,8 +58,6 @@ struct TaskRowView: View {
                                 .font(.system(size: 11))
                                 .foregroundColor(.appDarkBlue.opacity(0.5))
                         }
-
-                        Spacer()
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(12)
@@ -67,7 +65,7 @@ struct TaskRowView: View {
                         task.isCompleted ? Color.appBeige.opacity(0.3) : Color.appBeige
                     )
                     .cornerRadius(12)
-                    .fixedSize(horizontal: false, vertical: true) 
+                    .fixedSize(horizontal: false, vertical: false)
                 }
                 .shadow(color: .black.opacity(0.03), radius: 2, x: 0, y: 1)
             }
