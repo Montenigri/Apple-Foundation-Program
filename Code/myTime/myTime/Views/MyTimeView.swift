@@ -89,7 +89,7 @@ struct MyTimeView: View {
             }
             
             // Day header
-            dayHeaderView(day: day, tasks: tasks)
+            dayHeaderView(day: day, tasks: tasks, isToday: isToday)
             
             // Tasks section
             if !tasks.isEmpty {
@@ -135,15 +135,29 @@ struct MyTimeView: View {
         }
     }
     
-    private func dayHeaderView(day: Date, tasks: [Task]) -> some View {
+    private func dayHeaderView(day: Date, tasks: [Task], isToday: Bool) -> some View {
         HStack(spacing: 6) {
             Text(dayName(from: day).uppercased())
                 .font(.system(size: 16, weight: .light))
                 .foregroundColor(tasks.isEmpty ? .appBeige.opacity(0.5) : .appBeige)
 
-            Text("\(Calendar.current.component(.day, from: day))")
-                .font(.system(size: 30, weight: .bold))
-                .foregroundColor(tasks.isEmpty ? .appBeige.opacity(0.5) : .appBeige)
+            // Numero del giorno con evidenziazione sottile per oggi
+            ZStack {
+                if isToday {
+                    // Contorno squadrato con bordi arrotondati
+                    RoundedRectangle(cornerRadius: 6)
+                        .stroke(Color.appBeige, lineWidth: 2)
+                        .frame(width: 36, height: 32)
+                        .animation(.easeInOut(duration: 0.5), value: isToday)
+                }
+                
+                Text("\(Calendar.current.component(.day, from: day))")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundColor(
+                        isToday ? .appBeige : // Stesso colore beige per coerenza
+                        (tasks.isEmpty ? .appBeige.opacity(0.5) : .appBeige)
+                    )
+            }
 
             // Linea orizzontale
             Rectangle()
@@ -157,7 +171,7 @@ struct MyTimeView: View {
                         endPoint: .trailing
                     )
                 )
-                .frame(height: 2) 
+                .frame(height: 2)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Spacer()
@@ -167,27 +181,23 @@ struct MyTimeView: View {
     }
     
     private func tasksListView(tasks: [Task]) -> some View {
-        // Gestione intelligente dell'altezza basata sul numero di task
         let taskCount = tasks.count
         let baseHeight: CGFloat = 80
         let maxVisibleTasks = 30
         let maxHeight: CGFloat = CGFloat(maxVisibleTasks) * baseHeight
-        
-        // Se ci sono pochi task, usa l'altezza esatta
-        // Se ci sono molti task, limita l'altezza e abilita lo scroll
         let shouldScroll = taskCount > maxVisibleTasks
-        // Altezza minima: se ci sono task, almeno baseHeight, altrimenti 0
         let listHeight = taskCount > 0 ? max(shouldScroll ? maxHeight : CGFloat(taskCount) * baseHeight, baseHeight) : 0
-        
+
         return List {
             ForEach(tasks.sorted(by: { $0.startTime < $1.startTime })) { task in
                 TaskRowView(task: task) {
                     selectedTask = task
                     showDetail = true
                 }
+                .padding(.horizontal, 12) // ✅ padding interno ai task
                 .listRowBackground(Color.clear)
                 .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)) // ✅ elimina padding List nativo
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button(role: .destructive) {
                         withAnimation(.easeInOut(duration: 0.3)) {
@@ -218,6 +228,7 @@ struct MyTimeView: View {
         .listStyle(.plain)
         .background(Color.clear)
     }
+
     
     private func emptyDayView() -> some View {
         Text("No tasks")

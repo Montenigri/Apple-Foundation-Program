@@ -114,7 +114,7 @@ class TaskManager: ObservableObject {
                 if let interest = interestsByPreference.first(where: { $0.duration <= remainingTime }) {
                     let newTask = Task(
                         name: interest.name,
-                        description: "Suggerimento basato sui tuoi interessi",
+                        description: "Suggestion based on your interests",
                         duration: interest.duration,
                         location: "",
                         startTime: currentTime,
@@ -245,7 +245,7 @@ class TaskManager: ObservableObject {
                 if interest.duration <= remainingTime {
                     let newTask = Task(
                         name: interest.name,
-                        description: "Suggerimento basato sui tuoi interessi",
+                        description: "Suggestion based on your interests",
                         duration: interest.duration,
                         location: "",
                         startTime: currentTime,
@@ -283,7 +283,7 @@ class TaskManager: ObservableObject {
         // 5 minutes before
         let beforeContent = UNMutableNotificationContent()
         beforeContent.title = "MyTime"
-        beforeContent.body = "Il task '\(task.name)' inizierà tra 5 minuti"
+        beforeContent.body = "The task '\(task.name)' will start in 5 minutes"
         beforeContent.sound = .default
         
         let beforeTrigger = UNTimeIntervalNotificationTrigger(
@@ -300,7 +300,7 @@ class TaskManager: ObservableObject {
         // 10 minutes after
         let afterContent = UNMutableNotificationContent()
         afterContent.title = "MyTime"
-        afterContent.body = "Hai completato il task '\(task.name)'?"
+        afterContent.body = "Have you completed the task '\(task.name)'?"
         afterContent.sound = .default
         
         let afterTrigger = UNTimeIntervalNotificationTrigger(

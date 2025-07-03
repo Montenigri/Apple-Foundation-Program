@@ -4,13 +4,13 @@ struct TaskRowView: View {
     let task: Task
     let onTap: () -> Void
     let descriptionLimit: Int
-    
+
     init(task: Task, descriptionLimit: Int = 30, onTap: @escaping () -> Void) {
         self.task = task
         self.descriptionLimit = descriptionLimit
         self.onTap = onTap
     }
-    
+
     var body: some View {
         Button(action: onTap) {
             HStack(alignment: .top, spacing: 0) {
@@ -43,6 +43,7 @@ struct TaskRowView: View {
                             .font(.system(size: 15, weight: .semibold))
                             .foregroundColor(task.isCompleted ? .gray.opacity(0.6) : .appDarkBlue)
                             .strikethrough(task.isCompleted)
+                            .layoutPriority(1)
 
                         if !task.description.isEmpty {
                             Text(truncated(task.description, limit: descriptionLimit))
@@ -57,6 +58,8 @@ struct TaskRowView: View {
                                 .font(.system(size: 11))
                                 .foregroundColor(.appDarkBlue.opacity(0.5))
                         }
+
+                        Spacer()
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(12)
@@ -64,6 +67,7 @@ struct TaskRowView: View {
                         task.isCompleted ? Color.appBeige.opacity(0.3) : Color.appBeige
                     )
                     .cornerRadius(12)
+                    .fixedSize(horizontal: false, vertical: true) 
                 }
                 .shadow(color: .black.opacity(0.03), radius: 2, x: 0, y: 1)
             }
@@ -78,7 +82,8 @@ struct TaskRowView: View {
         formatter.timeStyle = .short
         return formatter.string(from: date)
     }
-    func truncated(_ text: String, limit: Int) -> String {
+
+    private func truncated(_ text: String, limit: Int) -> String {
         if text.count > limit {
             let index = text.index(text.startIndex, offsetBy: limit)
             return String(text[..<index]) + "..."
@@ -87,7 +92,4 @@ struct TaskRowView: View {
         }
     }
 }
-
-
-
 
